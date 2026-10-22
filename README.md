@@ -168,7 +168,6 @@ No validator is shipped; the specification and rule data are meant to be enforce
 | `docs/grammar-examples.md` | valid and invalid line examples |
 | `docs/open-questions.md` | settled decisions and known limits |
 | `.analysis/` | labeled comment samples, measurement scripts and results (`numbers.json`, cited by `docs/evidence.md`) |
-| `plans/backlog/CcMigrate/` | specification for `cc-migrate`, a planned bulk-migration tool |
 | `install.sh` | installer |
 
 ## Evidence and limitations
@@ -188,8 +187,8 @@ Known limits:
 
 ## Roadmap
 
-`cc-migrate`, a command-line tool that migrates every comment in an existing codebase, is specified in
-[`plans/backlog/CcMigrate/`](plans/backlog/CcMigrate/). It sends each comment, with minimal metadata and no code, to a
+`cc-migrate`, a command-line tool that migrates every comment in an existing codebase, is specified in epic
+[#1](https://github.com/LightspeedDMS/coded-comments/issues/1) and its stories. It sends each comment, with minimal metadata and no code, to a
 small model that decides to drop it, rewrite it as coded lines, or trim an exported doc. Every proposal is then
 validated against the grammar, budgets and anchor resolution, and a dry-run report is produced before any file
 changes.
