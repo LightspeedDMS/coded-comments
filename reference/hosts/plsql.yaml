@@ -1,4 +1,4 @@
-marker: '--^ '
+marker: '-- ^ '
 line: '--'
 block: '/* */'
 doc: '-- or /* */ above a package spec item'

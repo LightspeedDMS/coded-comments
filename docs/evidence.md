@@ -56,23 +56,25 @@ chosen over alternatives that differ by at most 6 tokens [m:sep.total.semi.o200k
 Original text against kept lines plus coded lines; a pragma or shebang the case kept stays.
 
 ```coded
---^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
-#^ order ensure_encryption_key_salt before manager init; failure => abort startup
-//^ invariant topN <= maxSimpleTopN; slice <= 1MiB
-//^ hazard missing abi_version must parse as None, not current ABI; #1784
-#^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
-#^ external TLP >= 1.10 required; _AC/_BAT/_SAV are profile suffixes
-#^ external leaving _AC unset keeps GNOME Performance toggle working
-//^ why return null, not throw; parse error => caller logs warning
-//^ security allowed-tools list set => strip --dangerously-skip-permissions; that flag bypasses --allowedTools
-//^ see rust/xray-core/src/compiler/graph_preamble.rs:is_definitely_dead_code; verdict table
-#^ todo derive repos_skipped from domains-to-repos mapping; #874
-#^ perf regex_query = linear-time DFA; no backtracking
+-- ^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
+# ^ order ensure_encryption_key_salt before manager init; failure => abort startup
+// ^ invariant topN <= maxSimpleTopN; slice <= 1MiB
+// ^ hazard missing abi_version must parse as None, not current ABI; #1784
+# ^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
+# ^ external TLP >= 1.10 required; _AC/_BAT/_SAV are profile suffixes
+# ^ external leaving _AC unset keeps GNOME Performance toggle working
+// ^ why return null, not throw; parse error => caller logs warning
+// ^ security allowed-tools list set => strip --dangerously-skip-permissions; that flag bypasses --allowedTools
+// ^ see rust/xray-core/src/compiler/graph_preamble.rs:is_definitely_dead_code; verdict table
+# ^ todo derive repos_skipped from domains-to-repos mapping; #874
+# ^ perf regex_query = linear-time DFA; no backtracking
 ```
 
 The per-case counts below were measured on the earlier compact form of these lines (abbreviated tags, `<` for
 "before", no spaces). The readable form above costs 230 o200k / 228 cl100k tokens against 218 / 217 compact (+5.5%),
-still 73% below the 868-token originals.
+still 73% below the 868-token originals. The spaced canonical markers used above (`# ^`, `// ^`, `-- ^`) cost +0
+tokens on these 12 lines: 230 o200k / 228 cl100k in both forms (rescan: `.analysis/marker_spaced.json`; formatter
+matrix: `.analysis/formatters/`).
 
 | tag | original | tokens before -> after, compact form (o200k / cl100k) |
 |---|---|---|
@@ -100,7 +102,7 @@ Of 18 lexically public doc spans in the sample, 6 were truly exported and 7 were
 [m:docsample.lex.public.export.no]; 5 stayed undecided. In Rust (tests excluded) 2,860 lexically private against 1,450
 lexically public doc lines [m:doc.rust.excl_tests.private_lines] [m:doc.rust.excl_tests.public_lines]; the truly
 exported share is smaller still. Corpus case behind the pragma rule: a Go comment `// codeql[...] False positive: topN
-is bounded ...` kept its pragma and moved the explanation to `//^ invariant topN <= maxSimpleTopN; slice <= 1MiB`.
+is bounded ...` kept its pragma and moved the explanation to `// ^ invariant topN <= maxSimpleTopN; slice <= 1MiB`.
 
 ## Budgets
 
@@ -132,17 +134,23 @@ that choice are in `grammar-examples.md`.
 ## Load paths (Amendment 6 targets)
 
 Before the restructure the installed tree was about 10,100 o200k tokens in 8 files with 64 citation keys. After the
-restructure and the readability change it is 6,072 tokens in 24 files with 0 citation keys
-(`.analysis/measure_paths.py`, `numbers.json` keys `path.*`). Files, o200k: ENTRY 148, index 178, what 671, how 969,
-grammar 556, reviewer 754, exemptions 320, core.yaml 795, migrate 234, examples 337, hosts 53 (shell) to 133
-(typescript_javascript), all 14 under the 150 target.
+restructure, the readability change, the 2026-10-22 revision (spaced markers, `test:` anchor, S7, prose signals,
+ENTRY v2) and the relaxed clause rule (`=>` binds loosest, one comparison per side) it is 6,542 o200k tokens (6,538
+cl100k) in 24 files with 0 citation keys (`.analysis/measure_paths.py`, `numbers.json` keys `path.*`). Files, o200k:
+ENTRY 214, index 178, what 716, how 1,121, grammar 650, reviewer 779, exemptions 320, core.yaml 883, migrate 234,
+examples 337, hosts 53 (shell) to 133 (typescript_javascript), all 14 under the 150 target.
 
-| path | files | tokens | cap | target |
+| path | files | tokens o200k / cl100k | cap | target |
 |---|---|---|---|---|
-| writer | what + how + a host file | 1,790 | with a 150 allowance | 2,000 |
-| writer, largest host | the same with typescript_javascript (133) | 1,773 | measured | 2,000 |
-| reviewer | reviewer + what + core.yaml + grammar + exemptions + a host file | 3,246 | with a 150 allowance | 3,500 |
-| reviewer, largest host | the same with typescript_javascript (133) | 3,229 | measured | 3,500 |
-| entry snippet | `ENTRY.md` | 148 (cl100k 147) | measured | 150 |
+| writer | what + how + a host file | 1,987 / 1,988 | with a 150 allowance | 2,000 |
+| writer, largest host | the same with typescript_javascript (133 / 132) | 1,970 / 1,970 | measured | 2,000 |
+| reviewer | reviewer + what + core.yaml + grammar + exemptions + a host file | 3,498 / 3,499 | with a 150 allowance | 3,500 |
+| reviewer, largest host | the same with typescript_javascript (133 / 132) | 3,481 / 3,481 | measured | 3,500 |
+| entry snippet | `ENTRY.md` | 214 / 213 | measured | 220 |
 
-Counts are tiktoken o200k, a proxy for Claude's tokenizer; the Anthropic counting API was unavailable.
+The reviewer path first measured 3,516 with the flat allowance; the PROSE row in `reviewer.md` now names
+`prose_signals` instead of listing the words (they stay in `how.md` and `core.yaml`), which brought it under target.
+After the relaxed clause rule added `side` and `cmp` to `core.yaml` and a longer S5, `grammar.md` S5 and its marker
+note were shortened to keep the reviewer path under 3,500.
+
+Counts are tiktoken o200k and cl100k, proxies for Claude's tokenizer; the Anthropic counting API was unavailable.

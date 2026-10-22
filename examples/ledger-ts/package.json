@@ -1,0 +1,24 @@
+{
+  "name": "ledger-ts",
+  "version": "0.1.0",
+  "description": "Small double-entry ledger on SQLite (node:sqlite)",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.16"
+  },
+  "bin": {
+    "ledger": "dist/src/bin.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --enable-source-maps --test \"dist/tests/**/*.test.js\"",
+    "test:coverage": "npm run build && node --enable-source-maps --experimental-test-coverage --test-coverage-exclude=\"dist/tests/**\" --test \"dist/tests/**/*.test.js\"",
+    "ledger": "node --disable-warning=ExperimentalWarning dist/src/bin.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^7.0.2"
+  }
+}

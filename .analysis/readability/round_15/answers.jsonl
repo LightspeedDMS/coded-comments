@@ -1,0 +1,59 @@
+{"id":1,"explanation":"The nonce check in verify rejects tokens whose nonce has already been seen. Removing it would allow a token to be replayed. #123 is the related issue.","unsure":""}
+{"id":2,"explanation":"ensure_key_salt must run before KeyManager is initialized. If ensuring the salt fails, startup must stop rather than proceed to create the manager.","unsure":""}
+{"id":3,"explanation":"Before allocating buf, topN must be no greater than maxSimpleTopN so the resulting slice stays at or below 1 MiB.","unsure":""}
+{"id":4,"explanation":"When meta.abi_version is missing, abi must be None. Treating the missing value as the current ABI would be wrong. #1784 is the related issue.","unsure":""}
+{"id":5,"explanation":"TLP reads /etc/tlp.conf after files matching /etc/tlp.d/*.conf, so a setting there overrides the drop-in written at /etc/tlp.d/90-power.conf. Both paths are configuration file locations.","unsure":""}
+{"id":6,"explanation":"The set_key configuration relies on TLP version 1.10 or later. _AC, _BAT and _SAV are TLP profile suffixes. Leaving the _AC setting unset preserves GNOME’s Performance toggle; this command sets only the battery setting.","unsure":""}
+{"id":7,"explanation":"On a JSON parse error, this catch block returns null so the caller can log a warning. Throwing instead would bypass that intended handling.","unsure":""}
+{"id":8,"explanation":"When an AllowedTools set is in use, RemoveSkipPermissions must strip --dangerously-skip-permissions from args. That flag bypasses the restriction supplied by --allowedTools.","unsure":""}
+{"id":9,"explanation":"For the rules behind thunk_is_dead’s dead-code verdict, see the verdict table in rust/xray-core/src/compiler/graph_preamble.rs, at the is_definitely_dead_code symbol.","unsure":""}
+{"id":10,"explanation":"The current repos_skipped value is a placeholder. It should eventually be calculated from the domains-to-repos mapping. #874 tracks that work.","unsure":""}
+{"id":11,"explanation":"The regex_query call uses a linear-time DFA, so this regex search does not incur backtracking costs.","unsure":""}
+{"id":12,"explanation":"The token-family table schema created here must stay in sync with RefreshTokenSqliteBackend._ensure_schema in src/storage/refresh_token_backend.py. That path and symbol identify the other schema definition.","unsure":""}
+{"id":13,"explanation":"The vendor’s batch API accepts at most 500 items, so MAX_BATCH is set to 500. doc:vendor-api#limits points to the limits section of the vendor API documentation.","unsure":""}
+{"id":14,"explanation":"The Status values must stay in sync with STATUS_LABELS in web/src/status.ts. Their iota order also determines stored integer values; reordering them would make existing integers mean different statuses. #88 is the related issue.","unsure":""}
+{"id":15,"explanation":"This index must keep tenant_id first and created_at second to match the orders_by_tenant query. orders_by_tenant names the query that depends on the column order.","unsure":""}
+{"id":16,"explanation":"TList.Add must preserve the rule that FCount never exceeds Length(FItems). Grow is the operation that maintains enough capacity.","unsure":""}
+{"id":17,"explanation":"close must call _flush before closing the sink because closing drops _buf, which contains data that still needs flushing.","unsure":""}
+{"id":18,"explanation":"The request path is untrusted. Resolve it under workspaceRoot and reject paths whose .. components escape that root; the shown resolve and normalize operation is part of that handling.","unsure":"The snippet does not show the escape check, so it is unclear where the required rejection occurs."}
+{"id":19,"explanation":"ring_drain must finish before buf is freed. Freeing buf first could let the IRQ handler access freed memory. #2201 is the related issue.","unsure":""}
+{"id":20,"explanation":"Calling reserve(n) before adding items is intended to allocate once. Earlier push_back capacity growth accounted for 40% of the measured profile. doc:perf-notes#ingest points to the ingest section of the performance notes.","unsure":""}
+{"id":21,"explanation":"The SQL Server MERGE on dbo.Accounts needs HOLDLOCK to prevent concurrent upserts from racing. doc:mssql-merge#concurrency points to the concurrency section of the MERGE documentation.","unsure":""}
+{"id":22,"explanation":"The audit operation uses an autonomous transaction so its row survives even if the caller rolls back its own transaction.","unsure":""}
+{"id":23,"explanation":"For the SQLite constraint change associated with this statement, rebuild the table because SQLite ALTER TABLE cannot drop the constraint directly. doc:sqlite-alter#otheralter points to the relevant ALTER TABLE documentation section.","unsure":""}
+{"id":24,"explanation":"The loop scans every five seconds because NFS mounts do not emit the inotify events this work would need.","unsure":""}
+{"id":25,"explanation":"Keep the awaited run calls in a for...of loop. Using await inside forEach would let asynchronous errors escape the surrounding try/catch.","unsure":""}
+{"id":26,"explanation":"Every Vec<u8> frame returned here must have length at most MAX_FRAME. The decoder enforces that limit by rejecting larger frames.","unsure":""}
+{"id":27,"explanation":"Register the shutdown hook before pool.start(). The hook drains the pool on SIGTERM, so it must already be installed when the pool begins running.","unsure":""}
+{"id":28,"explanation":"The hard-coded retry delay should move into configuration. The task is complete when Default in internal/retry/policy.go reads that configuration; the path and symbol identify the target implementation.","unsure":""}
+{"id":29,"explanation":"Issue #412 contains the full matrix of allowed transitions among the LeaseState values Active, Released and Stale.","unsure":""}
+{"id":30,"explanation":"Pass the token to tool login through stdin only. Putting it in an argument would expose it in argv, which ps shows to other users.","unsure":""}
+{"id":31,"explanation":"Create app_reader before granting it table access. Migration 042 also assumes that role exists; 042 identifies the dependent migration.","unsure":""}
+{"id":32,"explanation":"Stripe can retry webhook delivery for three days, so on_event must handle repeat deliveries without duplicating their effects. doc:stripe#webhook-retries points to the webhook retry documentation.","unsure":""}
+{"id":33,"explanation":"Compare the supplied and expected MACs with hmac.Equal, which uses constant-time comparison. Using == could reveal information through comparison timing.","unsure":""}
+{"id":34,"explanation":"Build the graph once per index. The build takes time proportional to the number of edges, so doing it for every query would repeat that cost.","unsure":""}
+{"id":35,"explanation":"The packed TCustomerRec layout is part of the format of saved .dat files. Changing it can make those files unreadable or misread, so bump FILE_VERSION when changing the layout.","unsure":""}
+{"id":36,"explanation":"Keep MSG_MAX in sync with MSG_MAX_WIRE in proto/messages.h. The path and symbol identify the matching wire-size limit, and both constants must change together.","unsure":""}
+{"id":37,"explanation":"handler assumes authMiddleware has already run and set session.userId to a non-null value.","unsure":""}
+{"id":38,"explanation":"The cache access is synchronized because its check and subsequent put must be one atomic operation. A ConcurrentHashMap alone would not make that multi-step operation atomic.","unsure":""}
+{"id":39,"explanation":"The repository alias comes from a user, so validate it against the registry before using it in a path join. #1996 is the related security issue.","unsure":""}
+{"id":40,"explanation":"An inserted payment’s Amount must be nonnegative. Refunds are represented as separate rows whose Kind is 'R', rather than as negative amounts.","unsure":""}
+{"id":41,"explanation":"Set the stop flag before joining worker_. Otherwise the worker may keep running and join could block forever.","unsure":""}
+{"id":42,"explanation":"The rate limiter is set for GitHub’s stated limit of 5,000 API requests per hour per token, approximately one request every 720 milliseconds. doc:github-rest#rate-limits points to the REST API rate-limit documentation.","unsure":""}
+{"id":43,"explanation":"Stop the cidx service before replacing its binary at /usr/local/bin/cidx. Replacing it while it is running can fail with “Text file busy.”","unsure":""}
+{"id":44,"explanation":"Do not share _lease between jobs belonging to different users; doing so can expose one user’s credentials to another. #77 is the related issue.","unsure":""}
+{"id":45,"explanation":"The ids passed to this DELETE must contain no more than 999 values, because each becomes a bound variable and the stated SQLite limit is 999 per statement.","unsure":""}
+{"id":46,"explanation":"If cgroup.create fails while setting the memory limit, warn and let the job continue. The comment says a bad memory estimate should not abort the job.","unsure":""}
+{"id":47,"explanation":"Remove the legacy /v1/jobs route in a future change. #530 tracks that removal.","unsure":""}
+{"id":48,"explanation":"The session model and the reason SessionRegistry keeps sessions per tab are documented in the session-model section of ADR 007, referenced as doc:adr-007#session-model.","unsure":""}
+{"id":49,"explanation":"This partial index covers only leases where released_at is NULL, matching the active-lease lookup. The comment reports that it made that lookup 30 times faster.","unsure":""}
+{"id":50,"explanation":"Keep EVENT_TYPES synchronized with EVENT_LABELS in web/src/events.ts and with docs/events.md. Those references identify the UI labels and documentation for the same event types.","unsure":""}
+{"id":51,"explanation":"Sweep must not evict a bucket solely because it has exceeded IdleTTL. It also checks fullAt, because evicting an unfilled bucket would recreate it with tokens before its normal refill time. TestSweepKeepsBucketsThatWouldNotBeFullYet is the regression test for this behavior.","unsure":""}
+{"id":52,"explanation":"Use 1-eps as the token threshold because adding fractional refills can leave a value just below 1 through rounding drift. Requiring exactly 1 would deny an otherwise eligible request. TestFractionalRefillIsPreservedAcrossRequests covers this case.","unsure":""}
+{"id":53,"explanation":"The double cast treats insert.get’s result as TransferRow because INSERT RETURNING guarantees one row here. The comment says a runtime null check is unnecessary on this path.","unsure":""}
+{"id":54,"explanation":"The PRAGMA statements alone do not read the database file. Running a query against sqlite_schema forces a schema read so openDb rejects a file that is not a database.","unsure":""}
+{"id":55,"explanation":"Keep the guarded call to set_int_max_str_digits(0): on CPython 3.9.14 and later, removing the raised digit limit can prevent a ValueError when handling integers beyond 4,300 digits. The hasattr guard allows runtimes without that function to continue.","unsure":""}
+{"id":56,"explanation":"The literal 'equity' in the trigger’s WHEN condition must match EQUITY_ACCOUNT in src/ledger.ts. That path and symbol identify the other definition of the equity account.","unsure":""}
+{"id":57,"explanation":"Check isApplied again inside the write transaction. The earlier pending scan may be stale if another migrator applied the same migration meanwhile; the locked recheck prevents applying it twice.","unsure":""}
+{"id":58,"explanation":"Keep set_int_max_str_digits(0) before printing the integer result. Without it, converting an integer longer than 4,300 digits to text with str() can raise ValueError.","unsure":""}
+{"id":59,"explanation":"For retries where attempt is greater than zero, backoff must return a delay no greater than maxBackoff. The initial attempt must run without waiting.","unsure":""}

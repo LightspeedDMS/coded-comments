@@ -1,5 +1,7 @@
 # coded-comments: WHAT to document
 
+Scope: every comment in production code and tests. Coded lines replace prose; they never sit beside it.
+
 For each fact you might write, go top to bottom. The first yes decides.
 
 0. Pragma, license, copyright, shebang, encoding line, generated marker: leave as is.
@@ -32,6 +34,7 @@ If you cannot say in five words which mistake the line prevents or which search 
 
 ## Exported surface
 
-A truly exported declaration (host file) may keep one prose doc, in addition to coded lines: a summary line plus one
-line per param, return or raise the types do not carry. Never required; omit it when it only repeats the name. No
-coded syntax inside it. A fact that passed step 5 goes in a coded line, not in the prose.
+Only a library's public API, as the host file's export test defines it, may keep one prose doc per declaration: a
+summary line plus one line per param, return or raise the types do not carry. Never required; omit it when it only
+repeats the name. No coded syntax inside it. Internal packages, app modules, private helpers and tests get no prose
+docs. A fact that passed step 5 goes in a coded line, not in the prose.

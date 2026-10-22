@@ -1,0 +1,93 @@
+{
+ "generated": "2026-10-22T21:36:05+00:00",
+ "method": "Original measure_markers.scan_files file selection (SHA256-ranked, max 400 files per language, Claude-touched files that still exist). A line counts when its lstripped text starts with opener+' ^' (spaced) or opener+'^' (legacy, baseline); tagged = the next word is one of the tags. spaced_inline_any counts non-line-start occurrences (supplementary).",
+ "tags": [
+  "hazard",
+  "coupled",
+  "security",
+  "invariant",
+  "external",
+  "order",
+  "why",
+  "see",
+  "perf",
+  "todo"
+ ],
+ "corpus": {
+  "dev_dir": "~/Dev (CC_CORPUS_DIR or Path.home()/Dev)",
+  "repos_expected": [
+   "GitNexus",
+   "claude-pace-maker",
+   "claude-server",
+   "code-indexer",
+   "llm-creds-provider",
+   "ragflow",
+   "roxy",
+   "setup-dev-rocky",
+   "swing-mcp-automation",
+   "tdd-guard"
+  ],
+  "repos_found": [
+   "GitNexus",
+   "claude-pace-maker",
+   "claude-server",
+   "code-indexer",
+   "llm-creds-provider",
+   "ragflow",
+   "roxy",
+   "setup-dev-rocky",
+   "swing-mcp-automation",
+   "tdd-guard"
+  ],
+  "repos_missing": [],
+  "frozen_list_files": 2124,
+  "frozen_list_files_missing_on_disk": 0,
+  "fresh_scan_files": 2124,
+  "fresh_scan_equals_frozen_list": true,
+  "files_scanned": 2124,
+  "files_by_language": {
+   "python": 400,
+   "typescript_js": 233,
+   "shell": 157,
+   "go": 400,
+   "rust": 178,
+   "csharp": 400,
+   "java": 248,
+   "c": 5,
+   "cpp": 8,
+   "pascal": 1,
+   "sql": 94
+  }
+ },
+ "counts_by_language": {
+  "python": {
+   "spaced_any": 1,
+   "# spaced_any": 1
+  },
+  "shell": {
+   "legacy_any": 1,
+   "# legacy_any": 1,
+   "legacy_tagged": 1
+  }
+ },
+ "totals": {
+  "spaced_any": 1,
+  "# spaced_any": 1,
+  "legacy_any": 1,
+  "# legacy_any": 1,
+  "legacy_tagged": 1
+ },
+ "samples": {
+  "spaced_any": [
+   "code-indexer/src/code_indexer/services/tantivy_index_manager.py:1304: # ^ ext tantivy 0.25 stub omits SearchResult.count (int when count=True)"
+  ],
+  "spaced_tagged": [],
+  "legacy_any": [
+   "code-indexer/rust-automation.sh:89: #^ why --locked: fail on Cargo.lock drift here, not at deploy (the auto-updater builds with --locked"
+  ],
+  "legacy_tagged": [
+   "code-indexer/rust-automation.sh:89: #^ why --locked: fail on Cargo.lock drift here, not at deploy (the auto-updater builds with --locked"
+  ],
+  "spaced_inline_any": []
+ }
+}

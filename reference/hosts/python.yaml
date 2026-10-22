@@ -1,4 +1,4 @@
-marker: '#^ '
+marker: '# ^ '
 line: '#'
 block: none
 doc: 'docstring: first statement of module, class, def'

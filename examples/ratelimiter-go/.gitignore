@@ -1,0 +1,7 @@
+# build outputs
+/bin/
+/ratelimiter
+*.exe
+*.test
+*.out
+coverage.html

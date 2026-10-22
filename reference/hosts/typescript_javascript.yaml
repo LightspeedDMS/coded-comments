@@ -1,4 +1,4 @@
-marker: '//^ '
+marker: '// ^ '
 line: '//'
 block: '/* */'
 doc: 'JSDoc/TSDoc /** */ before a declaration'

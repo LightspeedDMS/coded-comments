@@ -1,4 +1,4 @@
-marker: '//^ '
+marker: '// ^ '
 line: '//'
 block: '/* */'
 doc: 'comment block directly above a declaration'

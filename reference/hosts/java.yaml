@@ -1,4 +1,4 @@
-marker: '//^ '
+marker: '// ^ '
 line: '//'
 block: '/* */'
 doc: '/** */ Javadoc before a declaration'

@@ -8,9 +8,9 @@ agent nothing it could not derive from the code itself. coded-comments sets a st
 terse, machine-checkable line format for the few that pass.
 
 ```
-//^ hazard removing nonce check => replay attacks; #123
-#^ order ensure_key_salt before KeyManager init; failure => abort startup
---^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
+// ^ hazard removing nonce check => replay attacks; #123
+# ^ order ensure_key_salt before KeyManager init; failure => abort startup
+-- ^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
 ```
 
 ## Principles
@@ -22,7 +22,7 @@ terse, machine-checkable line format for the few that pass.
 - **Verifiable references.** Paths, symbols, issue numbers and doc anchors must resolve. A reference that stops
   resolving is a detectable defect, not silent rot.
 - **Small instruction footprint.** The installed rules are split by task so an agent loads only what it needs: about
-  1,800 tokens to write comments, about 3,250 to review them.
+  1,990 tokens to write comments, about 3,500 to review them (o200k, with a 150-token host-file allowance).
 
 ## Example
 
@@ -50,7 +50,7 @@ cache = {}
 for user in users:
     cache[user.id] = user
 
-#^ order ensure_key_salt before KeyManager init; failure => abort startup
+# ^ order ensure_key_salt before KeyManager init; failure => abort startup
 ensure_key_salt()
 manager = KeyManager()
 ```
@@ -67,9 +67,12 @@ are terse facts that keep their verbs ("must parse as", "is read last") and drop
 
 | marker | languages |
 |---|---|
-| `#^` | Python, Shell |
-| `//^` | TypeScript/JavaScript, Go, Rust, C#, Java, C, C++, Pascal (Delphi, Free Pascal) |
-| `--^` | SQL: Oracle PL/SQL, PostgreSQL, SQL Server T-SQL, SQLite |
+| `# ^` | Python, Shell |
+| `// ^` | TypeScript/JavaScript, Go, Rust, C#, Java, C, C++, Pascal (Delphi, Free Pascal) |
+| `-- ^` | SQL: Oracle PL/SQL, PostgreSQL, SQL Server T-SQL, SQLite |
+
+The marker is written with a space for formatter compatibility: black, ruff and gofmt rewrite `#^` and `//^` into
+that form. Readers accept both the spaced and the legacy unspaced marker.
 
 **Tags.** Each tag has an admission test; a fact that matches none is not written.
 
@@ -87,18 +90,20 @@ are terse facts that keep their verbs ("must parse as", "is read last") and drop
 | `todo` | a remaining task is checkable: an issue number, or `done when <path:symbol> <state>` |
 
 **Operators:** `=>` leads to (causes, then, returns, requires), `=` is, `!=` is not, `<` `<=` `>` `>=` compare values.
+`=>` binds loosest: a clause is `side => side` with at most one comparison per side (`removing X => ints > 4300 digits raise`).
 Order is written with the words `before` and `after`.
-**Anchors:** `path:symbol`, `#123`, `doc:anchor`, symbol names, and backtick literals for names that contain operator
-characters (`` `Vec<u8>` ``).
+**Anchors:** `path:symbol`, `#123`, `doc:anchor`, `test:Name` (a test that fails on the wrong edit), symbol names, and
+backtick literals for names that contain operator characters (`` `Vec<u8>` ``).
 
 ```
-//^ invariant topN <= maxSimpleTopN; slice <= 1MiB
-#^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
-//^ why return null, not throw; parse error => caller logs warning
-#^ todo move retry policy to config; done when internal/retry/policy.go:Default reads config
+// ^ invariant topN <= maxSimpleTopN; slice <= 1MiB
+# ^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
+// ^ why return null, not throw; parse error => caller logs warning
+// ^ hazard evicting idle buckets before refill => key gets free tokens; test:TestSweepKeepsPartialBuckets
+# ^ todo move retry policy to config; done when internal/retry/policy.go:Default reads config
 ```
 
-A Codex model given only the entry snippet below explained 50 such snippets across all 14 languages, plus 15 held-out
+A Codex model given only the entry snippet below explained 59 such snippets across all 14 languages, plus 15 held-out
 ones, with no misreadings in two consecutive runs ([`.analysis/readability/`](.analysis/readability/README.md)).
 
 **Exempt from the format:** prose docs on the truly exported API surface (capped in length), tool pragmas, license and
@@ -125,11 +130,11 @@ protocol, add the entry snippet it prints (also in [`reference/ENTRY.md`](refere
 
 ```markdown
 ## Code comments (coded-comments)
-Write a comment only if it prevents a mistake or saves a search that code, names, types and tests cannot, as one coded line, never prose: `//^ hazard removing nonce => replay attacks; #123` (`#^` Python/Shell, `--^` SQL). Tags: hazard coupled security invariant external order why (deliberate choice; `not X` is the rejected option) see perf todo. `=>` leads to; `;` separates facts; `doc:x` doc anchor. Exempt: exported-API docs, pragmas, licenses, generated markers.
-To write, review or migrate comments, read `~/.claude/coded-comments/index.md`.
+Before writing your first comment in a session, read `~/.claude/coded-comments/index.md`.
+In code and tests, comment only to prevent a mistake or save a search that code, names, types and tests cannot. Each comment is one coded line that replaces prose, never sits beside it: `// ^ hazard removing nonce => replay attacks; test:TestReplayRejected` (`# ^` Python/Shell, `-- ^` SQL). Tags: hazard coupled security invariant external order why see perf todo; `why <choice>, not <rejected>; <reason>`. Per clause one `=>` (leads to) and one `=` `!=` `<` `>` per side; order by before/after; `;` separates facts; anchors `path:symbol` `#123` `doc:x` `test:Name`. No prose docs (docstrings, JSDoc, godoc) except on a library's public API. Exempt: pragmas, licenses, generated markers.
 ```
 
-The snippet costs about 150 tokens. The agent reads `index.md` on demand and loads only the files for the task at
+The snippet costs 214 tokens (o200k; 213 cl100k). The agent reads `index.md` on demand and loads only the files for the task at
 hand:
 
 | task | files loaded |

@@ -1,4 +1,4 @@
-marker: '--^ '
+marker: '-- ^ '
 line: '--'
 block: '/* */'
 doc: 'sp_addextendedproperty MS_Description'

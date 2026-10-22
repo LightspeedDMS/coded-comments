@@ -26,17 +26,25 @@ two consecutive runs at 100% on both sets.
 | 6, 7 | why gloss "(deliberate choice, do not change)", `#n` gloss dropped | 48, 48 (7, 22) | 15, 15 |
 | 8, 9 | writing rule: a `why` line names the rejected option (`why <choice>, not <alt>; <reason>`); snippets 7 and 22 rewritten to it | 49 (22), 50 | 15, 15 |
 | 10, 11 | why gloss "(deliberate choice; `not X` is the rejected option)", `see` gloss dropped | **50, 50** | **15, 15** |
+| 12, 13 | 2026-10-22 revision: ENTRY v2 (210 tokens, why form instead of gloss, `test:Name`), spaced markers `# ^` `// ^` `-- ^` in all snippets; 7 new snippets (51-57) from the example builds' corrected lines | **57, 57** | **15, 15** |
+| 14 | snippet 53 fixed to pass S1 (`INSERT RETURNING => always one row`) | **57** | - |
+| 15 | `=>` binds loosest (one `=>` per clause, one comparison per side), ENTRY 214 tokens; snippets 58-59 use it | 58 (22 weak) of 59 | 15 |
+| 16, 17 | none | **59, 59** of 59 | **15** |
 
 Weak items were always `why` lines that only described the behavior, never a misreading. Lines that named the rejected
 option (24, 38, 46, 103, 114) passed in every run. Run 1 also exposed a factual error in snippet 45 (SQLite's
 999-variable limit does not bound an `executemany` batch); the snippet was corrected, not the notation. Notation
-misreadings across all 11 runs and 9 holdout runs: 0.
+misreadings across all 17 runs and 13 holdout runs: 0.
 
-Final `ENTRY.md` (148 o200k tokens) is the one in `round_10/entry_used.md` and `round_11/entry_used.md`.
+Current `ENTRY.md` (v2 with the relaxed `=>` rule, 214 o200k tokens) is the one in `round_15/` to `round_17/` and
+`holdout_12/`, `holdout_13/`; v2 before that change (210 tokens) is in `round_12/` to `round_14/`, v1 (148 tokens) in
+`round_10/` and `round_11/`. In round 13, snippet 52's answer stated the `1-eps` threshold as an instruction without
+naming `not 1`; graded PASS (imperative). In round 15, snippet 22's answer described the autonomous transaction without
+an imperative or the rejected option (WEAK); rounds 16 and 17 named the caller's transaction or used "Use".
 
-Coverage: 10 tags, 14 hosts, every operator, `before`/`after`, multi-fact `;` lines, `#n`, `path:symbol`, `doc:`
-anchors, backtick literals, trailing comments and runs of two lines. The holdout was written after run 3 and never
-used to change the notation.
+Coverage: 10 tags, 14 hosts, every operator, `before`/`after`, multi-fact `;` lines, `#n`, `path:symbol`, `doc:` and
+`test:` anchors, backtick literals, trailing comments and runs of two lines. The holdout was written after run 3 and
+never used to change the notation.
 
 ## Files
 

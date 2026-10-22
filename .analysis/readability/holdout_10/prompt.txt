@@ -1,0 +1,113 @@
+You are a coding agent working in a repository. The block below is part of your standing instructions (it sits in
+your CLAUDE.md / AGENTS.md); it is everything you have been told about this comment style.
+
+<standing_instructions>
+## Code comments (coded-comments)
+Before writing your first comment in a session, read `~/.claude/coded-comments/index.md`.
+In code and tests, comment only to prevent a mistake or save a search that code, names, types and tests cannot. Each comment is one coded line that replaces prose, never sits beside it: `// ^ hazard removing nonce => replay attacks; test:TestReplayRejected` (`# ^` Python/Shell, `-- ^` SQL). Tags: hazard coupled security invariant external order why see perf todo; `why <choice>, not <rejected>; <reason>`. One operator per clause: `=>` leads to, `=` `!=` `<` `>`; order by before/after; `;` separates facts; anchors `path:symbol` `#123` `doc:x` `test:Name`. No prose docs (docstrings, JSDoc, godoc) except on a library's public API. Exempt: pragmas, licenses, generated markers.
+</standing_instructions>
+
+Rules for this task:
+- Answer only from this message. Do not read any files, do not run any commands, do not search.
+- Below are code snippets from the repository. For each snippet, explain in plain English what every comment that
+  starts with `# ^`, `// ^` or `-- ^` tells a developer: what it warns about, requires, explains or points to, which
+  code it applies to, and what each reference in it is (issue numbers, file paths, symbols, doc anchors).
+- Be concrete and complete; do not just restate the comment.
+- If any part of a comment's notation is ambiguous to you, say exactly what and why in `unsure` (empty string if
+  nothing).
+
+Output: one JSON object per line, nothing else, in snippet order:
+{"id": <number>, "explanation": "<prose>", "unsure": "<what was ambiguous, or empty>"}
+
+Snippet 101:
+```python
+# ^ hazard caching get_user per process => stale roles after revoke; #640
+def get_user(uid):
+    return db.fetch_user(uid)
+```
+
+Snippet 102:
+```go
+// ^ order defer rows.Close() after err check; rows is nil on error
+rows, err := db.Query(q)
+if err != nil { return err }
+defer rows.Close()
+```
+
+Snippet 103:
+```typescript
+// ^ why setTimeout 0, not queueMicrotask; layout must settle before measure
+setTimeout(() => measure(el), 0);
+```
+
+Snippet 104:
+```rust
+// ^ security never log `Secret<String>` contents => Debug prints redacted only
+let token: Secret<String> = load_token()?;
+```
+
+Snippet 105:
+```csharp
+// ^ coupled RetryCount with appsettings.json:Http.Retry; both change together
+public const int RetryCount = 3;
+```
+
+Snippet 106:
+```java
+// ^ invariant offset % pageSize = 0; mmap rejects unaligned offsets
+MappedByteBuffer buf = ch.map(READ_ONLY, offset, len);
+```
+
+Snippet 107:
+```bash
+# ^ external rsync trailing slash on src => copies contents, not the dir
+rsync -a build/ "$DEST"
+```
+
+Snippet 108:
+```sql
+-- ^ perf BRIN on created_at = 1% of btree size; table is append-only by time
+CREATE INDEX ix_events_created ON events USING brin (created_at);
+```
+
+Snippet 109:
+```c
+// ^ todo replace spin wait with futex; done when src/sync/lock.c:lock_acquire sleeps
+while (atomic_load(&flag)) { cpu_relax(); }
+```
+
+Snippet 110:
+```sql
+-- ^ see doc:runbook#failover; why this proc runs on the secondary
+CREATE PROCEDURE dbo.RebuildStats AS
+```
+
+Snippet 111:
+```python
+timeout = 30  # ^ external upstream proxy kills idle requests after 60s; timeout < 60
+```
+
+Snippet 112:
+```cpp
+// ^ hazard making ~Widget() non-virtual => derived destructors skipped; #915
+virtual ~Widget();
+```
+
+Snippet 113:
+```sql
+-- ^ order PRAGMA foreign_keys = ON before any write; it is per connection
+PRAGMA foreign_keys = ON;
+```
+
+Snippet 114:
+```pascal
+// ^ why ShortString, not string; record is written to disk byte for byte
+Name: string[40];
+```
+
+Snippet 115:
+```sql
+-- ^ security caller input => bind variables only; EXECUTE IMMEDIATE with concat => SQL injection
+EXECUTE IMMEDIATE 'DELETE FROM t WHERE id = :1' USING p_id;
+```
+

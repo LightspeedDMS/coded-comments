@@ -1,4 +1,4 @@
-marker: '//^ '
+marker: '// ^ '
 line: '//'
 block: '{ } (* *)'
 doc: '/// XMLDoc or { } block above a declaration'

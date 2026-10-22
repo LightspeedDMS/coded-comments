@@ -2,9 +2,13 @@ version: 1
 tags: [hazard, coupled, security, invariant, external, order, why, see, perf, todo]
 order_words: [before, after]
 markers:
-  hash: '#\^'
-  slash: '//\^'
-  dash: '--\^'
+  hash: '# ?\^'
+  slash: '// ?\^'
+  dash: '-- ?\^'
+canonical:
+  hash: '# ^'
+  slash: '// ^'
+  dash: '-- ^'
 hosts:
   python: hash
   shell: hash
@@ -23,15 +27,19 @@ hosts:
 parts:
   word: '(?:`[^`\n\r]+`|[^\s;<>=!`])+'
   operand: '{word}(?: {word})*'
-  op: '(?:=>|<=|>=|!=|<|>|=)'
-  clause: '{operand}(?:\s?{op}\s?{operand})?'
+  cmp: '(?:<=|>=|!=|<|>|=)'
+  side: '{operand}(?:\s?{cmp}\s?{operand})?'
+  clause: '{side}(?:\s?=>\s?{side})?'
   body: '{clause}(?:; ?{clause})*'
   coded: '(?:^|\s){marker} (?:{tags}) {body}$'
-word_class_order: [quoted, issue, doc, path, symbol]
+why_form: '^why [^;]+, not [^;]+'
+prose_signals: [': ', ' so ', ' but ', ' because ', ' which ']
+word_class_order: [quoted, issue, doc, test, path, symbol]
 word_class:
   quoted: '`'
   issue: '^#\d+$'
   doc: '^doc:'
+  test: '^test:\S+$'
   path: '/|\.(?:py|js|ts|tsx|jsx|go|rs|cs|java|c|h|cc|cpp|hpp|pas|sh|sql|md|yaml|yml|json|toml|xml|cfg|conf|ini|txt)(?::\S+)?$'
   symbol: '_|[a-z][A-Z]|[A-Za-z_]\.[A-Za-z_]|::|\(\)$'
 budgets:

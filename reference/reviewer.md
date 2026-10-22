@@ -1,7 +1,7 @@
 # coded-comments: reviewer
 
-Check the comments added or changed in a diff, plus unchanged coded lines that name a symbol renamed in it. Report;
-do not edit code. Rules: `rules/core.yaml`, `grammar.md`, `exemptions.md`, your host file.
+Check the comments added or changed in a diff, test files included, plus unchanged coded lines that name a symbol
+renamed in it. Report; do not edit code. Rules: `rules/core.yaml`, `grammar.md`, `exemptions.md`, your host file.
 
 ## Classify each comment (first match wins)
 
@@ -19,8 +19,8 @@ do not edit code. Rules: `rules/core.yaml`, `grammar.md`, `exemptions.md`, your 
 | class | sev | act | when |
 |---|---|---|---|
 | `FREE` | H | block | prose that is neither coded nor exempt; any block comment |
-| `SYNTAX` | H | block | has the marker but fails the grammar |
-| `PROSE` | H | block | no anchor or operator (S1), or a clause that reads as a sentence about the code (high confidence) |
+| `SYNTAX` | H | block | has the marker but fails the grammar, S5 (operator count) or S7 (`why` without `not`) |
+| `PROSE` | H | block | no anchor or operator (S1), a `prose_signals` hit, or a clause that reads as a sentence |
 | `STALE` | H | block | an anchor does not resolve, or a symbol-shaped word is not a symbol |
 | `UNKNOWN` | M | warn | a required check cannot be decided: doc export status, unreadable repository |
 | `VACUOUS` | M | warn | reads as a fact but asserts nothing checkable (`why retry_count works`) |

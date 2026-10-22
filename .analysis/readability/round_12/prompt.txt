@@ -1,0 +1,414 @@
+You are a coding agent working in a repository. The block below is part of your standing instructions (it sits in
+your CLAUDE.md / AGENTS.md); it is everything you have been told about this comment style.
+
+<standing_instructions>
+## Code comments (coded-comments)
+Before writing your first comment in a session, read `~/.claude/coded-comments/index.md`.
+In code and tests, comment only to prevent a mistake or save a search that code, names, types and tests cannot. Each comment is one coded line that replaces prose, never sits beside it: `// ^ hazard removing nonce => replay attacks; test:TestReplayRejected` (`# ^` Python/Shell, `-- ^` SQL). Tags: hazard coupled security invariant external order why see perf todo; `why <choice>, not <rejected>; <reason>`. One operator per clause: `=>` leads to, `=` `!=` `<` `>`; order by before/after; `;` separates facts; anchors `path:symbol` `#123` `doc:x` `test:Name`. No prose docs (docstrings, JSDoc, godoc) except on a library's public API. Exempt: pragmas, licenses, generated markers.
+</standing_instructions>
+
+Rules for this task:
+- Answer only from this message. Do not read any files, do not run any commands, do not search.
+- Below are code snippets from the repository. For each snippet, explain in plain English what every comment that
+  starts with `# ^`, `// ^` or `-- ^` tells a developer: what it warns about, requires, explains or points to, which
+  code it applies to, and what each reference in it is (issue numbers, file paths, symbols, doc anchors).
+- Be concrete and complete; do not just restate the comment.
+- If any part of a comment's notation is ambiguous to you, say exactly what and why in `unsure` (empty string if
+  nothing).
+
+Output: one JSON object per line, nothing else, in snippet order:
+{"id": <number>, "explanation": "<prose>", "unsure": "<what was ambiguous, or empty>"}
+
+Snippet 1:
+```python
+# ^ hazard removing nonce check => replay attacks; #123
+def verify(token):
+    if token.nonce in seen:
+        raise Replay()
+```
+
+Snippet 2:
+```python
+# ^ order ensure_key_salt before KeyManager init; failure => abort startup
+ensure_key_salt()
+manager = KeyManager()
+```
+
+Snippet 3:
+```go
+// ^ invariant topN <= maxSimpleTopN; slice <= 1MiB
+buf := make([]Chunk, topN)
+```
+
+Snippet 4:
+```rust
+// ^ hazard missing abi_version must parse as None, not current ABI; #1784
+let abi = meta.abi_version.map(Abi::from);
+```
+
+Snippet 5:
+```bash
+# ^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
+write_dropin /etc/tlp.d/90-power.conf
+```
+
+Snippet 6:
+```bash
+# ^ external TLP >= 1.10 required; _AC/_BAT/_SAV are profile suffixes
+# ^ external leaving _AC unset keeps GNOME Performance toggle working
+set_key CPU_ENERGY_PERF_POLICY_ON_BAT balance_power
+```
+
+Snippet 7:
+```csharp
+catch (JsonException) {
+    // ^ why return null, not throw; parse error => caller logs warning
+    return null;
+}
+```
+
+Snippet 8:
+```csharp
+// ^ security AllowedTools set => strip --dangerously-skip-permissions; that flag bypasses --allowedTools
+args = RemoveSkipPermissions(args);
+```
+
+Snippet 9:
+```rust
+// ^ see rust/xray-core/src/compiler/graph_preamble.rs:is_definitely_dead_code; verdict table
+fn thunk_is_dead(ctx: CtxPtr, id: u32) -> Option<bool> {
+```
+
+Snippet 10:
+```python
+# ^ todo derive repos_skipped from domains-to-repos mapping; #874
+repos_skipped = 0
+```
+
+Snippet 11:
+```python
+# ^ perf regex_query = linear-time DFA; no backtracking
+results = index.regex_query(pattern)
+```
+
+Snippet 12:
+```sql
+-- ^ coupled token-family tables with src/storage/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
+CREATE TABLE refresh_tokens (id TEXT PRIMARY KEY, family_id TEXT NOT NULL);
+```
+
+Snippet 13:
+```typescript
+const MAX_BATCH = 500; // ^ external vendor batch API accepts <= 500 items; doc:vendor-api#limits
+```
+
+Snippet 14:
+```go
+// ^ coupled Status values with web/src/status.ts:STATUS_LABELS
+// ^ hazard reordering iota => stored ints change meaning; #88
+const (
+    Pending Status = iota
+    Running
+    Done
+)
+```
+
+Snippet 15:
+```sql
+-- ^ invariant column order = (tenant_id, created_at); matches orders_by_tenant query
+CREATE INDEX ix_orders_tenant ON orders (tenant_id, created_at);
+```
+
+Snippet 16:
+```pascal
+// ^ invariant FCount <= Length(FItems); Grow keeps it
+procedure TList.Add(const Item: TItem);
+```
+
+Snippet 17:
+```python
+def close(self):
+    # ^ order _flush before close; close drops _buf
+    self._flush()
+    self._sink.close()
+```
+
+Snippet 18:
+```java
+// ^ security path from request => resolve under workspaceRoot; reject ".." escapes
+Path target = workspaceRoot.resolve(userPath).normalize();
+```
+
+Snippet 19:
+```c
+// ^ hazard freeing buf before ring_drain => use-after-free in irq handler; #2201
+ring_drain(&ring);
+free(buf);
+```
+
+Snippet 20:
+```cpp
+// ^ perf reserve(n) = one allocation; push_back growth was 40% of profile; doc:perf-notes#ingest
+items.reserve(n);
+```
+
+Snippet 21:
+```sql
+-- ^ external SQL Server MERGE needs HOLDLOCK => else concurrent upserts race; doc:mssql-merge#concurrency
+MERGE INTO dbo.Accounts WITH (HOLDLOCK) AS t
+```
+
+Snippet 22:
+```sql
+-- ^ why autonomous transaction, not the caller's; caller rollback => audit row survives
+PRAGMA AUTONOMOUS_TRANSACTION;
+```
+
+Snippet 23:
+```sql
+-- ^ external SQLite ALTER TABLE cannot drop constraints => rebuild table; doc:sqlite-alter#otheralter
+CREATE TABLE leases_new (id INTEGER PRIMARY KEY, expires_at TEXT);
+```
+
+Snippet 24:
+```python
+# ^ why poll interval = 5s, not inotify; NFS mounts emit no inotify events
+while not done.wait(5):
+    scan()
+```
+
+Snippet 25:
+```typescript
+// ^ hazard await inside forEach => errors escape try/catch; keep for...of
+for (const job of jobs) { await run(job); }
+```
+
+Snippet 26:
+```rust
+// ^ invariant `Vec<u8>` frame len <= MAX_FRAME; decoder rejects larger frames
+let frame: Vec<u8> = read_frame(&mut sock)?;
+```
+
+Snippet 27:
+```java
+// ^ order addShutdownHook before pool.start(); hook drains pool on SIGTERM
+Runtime.getRuntime().addShutdownHook(drainHook);
+pool.start();
+```
+
+Snippet 28:
+```go
+// ^ todo move retry policy to config; done when internal/retry/policy.go:Default reads config
+func backoff() time.Duration { return 2 * time.Second }
+```
+
+Snippet 29:
+```csharp
+// ^ see #412; full matrix of lease state transitions
+public enum LeaseState { Active, Released, Stale }
+```
+
+Snippet 30:
+```bash
+# ^ security token only via stdin => never in argv; ps shows argv to all users
+printf '%s' "$TOKEN" | tool login --token-stdin
+```
+
+Snippet 31:
+```sql
+-- ^ order create role before grant; migration 042 assumes app_reader exists
+CREATE ROLE app_reader;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO app_reader;
+```
+
+Snippet 32:
+```python
+# ^ external Stripe retries webhooks for 3 days => handler must be idempotent; doc:stripe#webhook-retries
+def on_event(evt):
+```
+
+Snippet 33:
+```go
+// ^ security compare MACs with hmac.Equal => constant time; `==` leaks timing
+if !hmac.Equal(sig, expected) {
+```
+
+Snippet 34:
+```rust
+// ^ perf graph build = O(edges) once per index; never per query
+let graph = CodeGraph::build(&facts);
+```
+
+Snippet 35:
+```pascal
+// ^ hazard changing record layout => breaks saved .dat files; bump FILE_VERSION
+type TCustomerRec = packed record
+```
+
+Snippet 36:
+```c
+// ^ coupled MSG_MAX with proto/messages.h:MSG_MAX_WIRE; both change together
+#define MSG_MAX 4096
+```
+
+Snippet 37:
+```typescript
+// ^ invariant session.userId != null after authMiddleware
+export function handler(req: Req) {
+```
+
+Snippet 38:
+```java
+// ^ why synchronized, not ConcurrentHashMap; check-then-put must be atomic
+synchronized (cache) {
+```
+
+Snippet 39:
+```python
+# ^ security repo alias from user => validate against registry before path join; #1996
+alias = validate_alias(raw)
+```
+
+Snippet 40:
+```sql
+-- ^ invariant Amount >= 0; refunds are separate rows with Kind = 'R'
+INSERT INTO dbo.Payments (Amount, Kind) VALUES (@amt, @kind);
+```
+
+Snippet 41:
+```cpp
+// ^ order join worker after stop flag set; else join blocks forever
+stop_.store(true);
+worker_.join();
+```
+
+Snippet 42:
+```go
+// ^ external GitHub API allows 5000 requests per hour per token; doc:github-rest#rate-limits
+limiter := rate.NewLimiter(rate.Every(720*time.Millisecond), 1)
+```
+
+Snippet 43:
+```bash
+# ^ order stop service before replacing binary; running binary => "Text file busy"
+systemctl stop cidx
+install -m 755 cidx /usr/local/bin/cidx
+```
+
+Snippet 44:
+```csharp
+// ^ hazard sharing _lease across jobs => credentials leak between users; #77
+private readonly CredentialLease _lease;
+```
+
+Snippet 45:
+```python
+cur.execute(f"DELETE FROM jobs WHERE id IN ({marks})", ids)  # ^ invariant len(ids) <= 999; SQLite bound-variable limit per statement
+```
+
+Snippet 46:
+```rust
+// ^ why containment failure => degrade, not abort; job survives bad memory estimate
+if let Err(e) = cgroup.create(limit) { warn!("{e}"); }
+```
+
+Snippet 47:
+```typescript
+// ^ todo remove legacy `/v1` route; #530
+app.get('/v1/jobs', legacyJobs);
+```
+
+Snippet 48:
+```java
+// ^ see doc:adr-007#session-model; why sessions are per tab
+public final class SessionRegistry {
+```
+
+Snippet 49:
+```sql
+-- ^ perf partial index = 30x faster active-lease lookup; WHERE released_at IS NULL
+CREATE INDEX ix_leases_active ON leases (credential_id) WHERE released_at IS NULL;
+```
+
+Snippet 50:
+```python
+# ^ coupled EVENT_TYPES with web/src/events.ts:EVENT_LABELS and docs/events.md
+EVENT_TYPES = ("created", "started", "finished")
+```
+
+Snippet 51:
+```go
+func (l *Limiter) Sweep(now time.Duration) int {
+	n := 0
+	for k, b := range l.buckets {
+		// ^ hazard evict on idle alone => key refills before refill time; test:TestSweepKeepsBucketsThatWouldNotBeFullYet
+		if now-b.last > l.cfg.IdleTTL && b.fullAt(now, l.cfg) {
+			delete(l.buckets, k)
+			n++
+		}
+	}
+	return n
+}
+```
+
+Snippet 52:
+```go
+	// ^ why threshold `1-eps`, not 1; summed fractional refills drift below 1; test:TestFractionalRefillIsPreservedAcrossRequests
+	if b.tokens >= 1-eps {
+		b.tokens--
+		return Decision{Allowed: true}
+	}
+```
+
+Snippet 53:
+```typescript
+  // ^ why double cast, not a null check; RETURNING always yields a row
+  const row = insert.get(key, desc, now) as unknown as TransferRow;
+```
+
+Snippet 54:
+```typescript
+export function openDb(path: string): DatabaseSync {
+  const db = new DatabaseSync(path);
+  db.exec("PRAGMA foreign_keys = ON");
+  // ^ external PRAGMAs never read the file => schema read rejects a non-database file
+  db.prepare("SELECT count(*) FROM sqlite_schema").get();
+  return db;
+}
+```
+
+Snippet 55:
+```python
+import sys
+
+from .cli import main
+
+# ^ hazard removing set_int_max_str_digits(0) => ValueError past 4300 digits; CPython 3.9.14+
+if hasattr(sys, "set_int_max_str_digits"):
+    sys.set_int_max_str_digits(0)
+
+sys.exit(main())
+```
+
+Snippet 56:
+```sql
+CREATE TRIGGER entries_no_overdraft BEFORE INSERT ON entries
+-- ^ coupled 'equity' literal with src/ledger.ts:EQUITY_ACCOUNT
+WHEN (SELECT name FROM accounts WHERE id = NEW.account_id) <> 'equity'
+BEGIN
+  SELECT RAISE(ABORT, 'insufficient funds');
+END;
+```
+
+Snippet 57:
+```typescript
+  for (const m of pending) {
+    inTransaction(db, () => {
+      // ^ why re-check under write lock, not trust the pending scan; concurrent migrator => double apply
+      if (isApplied(db, m.name)) return;
+      db.exec(m.sql);
+      markApplied(db, m.name);
+    });
+  }
+```
+

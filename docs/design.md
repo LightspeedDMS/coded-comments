@@ -9,7 +9,7 @@ Numbers come from `.analysis/numbers.json`; the narrative evidence is in `eviden
 AI-written code often carries about as much comment as code (the sampled ratios are in `evidence.md`). Much of it
 restates code, narrates steps, copies docs or records history, and every installed instruction and every generated
 comment costs context on each load. The objective is less junk in both: the instruction corpus an agent loads, and
-the comments it writes. So the installed tree is instructions only, with token targets (entry <= 150, writer path
+the comments it writes. So the installed tree is instructions only, with token targets (entry <= 220, writer path
 <= 2,000, reviewer path <= 3,500, host file <= 150), and evidence stays in `docs/` and `.analysis/`.
 
 ## Decisions
@@ -18,10 +18,12 @@ the comments it writes. So the installed tree is instructions only, with token t
 |---|---|---|
 | Admit a fact only through an ordered gate; the first question is whether an AI can derive it from this file or one hop away | most corpus comments failed that test; ten tags cover what carried value | `reference/what.md` |
 | Coded line `<marker> <tag> <clause>[;<clause>]`, one fact per physical line | one regex classifies a line; no continuation lines | `reference/how.md`, `grammar.md` |
-| Markers `#^`, `//^`, `--^` | chosen by measured token overhead and zero corpus collisions; `@` rejected for tool collisions | `reference/hosts/*.yaml` |
+| Markers `# ^`, `// ^`, `-- ^` (legacy `#^`, `//^`, `--^` still read) | `^` chosen by measured token overhead and zero corpus collisions; `@` rejected for tool collisions; written with a space because black, ruff and gofmt rewrite the unspaced form (decision 8 in `open-questions.md`) | `reference/hosts/*.yaml`, `rules/core.yaml` |
 | Positional ASCII, not the pace-maker glyph style | glyph style cost 5,271 tokens against 3,998 over 300 real lines | `evidence.md` |
-| Anchors (path, symbol, `#n`, `doc:`) or an operator on every line | references replace prose and can go stale detectably | `reference/grammar.md` |
+| Anchors (path, symbol, `#n`, `doc:`, `test:Name`) or an operator on every line | references replace prose and can go stale detectably; a `test:` anchor names the test that fails on the wrong edit | `reference/grammar.md` |
+| `why` line = `<choice>, not <alternative>` (S7); prose words (`: `, so, but, because, which) are a reviewer judgment signal | a `why` without a rejected option is narration; the signals assist PROSE judgment and are not a grammar failure | `reference/grammar.md`, `rules/core.yaml` |
 | Backtick literal, no other escapes | operators inside names such as `Vec<u8>` | `reference/grammar.md` |
+| Clause = `side => side`: `=>` binds loosest, one comparison per side (S5) | a writer probe produced `X => ints > 4300 digits raise` shapes in 4 of 4 runs, which one-operator-per-clause rejected; two `=>` or two comparisons on a side are still two facts | `reference/grammar.md`, `rules/core.yaml` |
 | Budgets: 160 chars, 40 tokens, 3-line runs, 0.10 coded lines per code line, diff allowance | design limits, tuned per project; real compression of ten pairs went from 868 to 236 tokens | `reference/how.md`, `rules/core.yaml` |
 | Reviewer = spec plus rule data, no shipped validator | pace-maker can consume the YAML later; judgment classes only warn | `reference/reviewer.md`, `rules/core.yaml` |
 
