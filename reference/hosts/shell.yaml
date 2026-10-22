@@ -1,0 +1,7 @@
+marker: '#^ '
+line: '#'
+block: none
+doc: none
+exported: none
+pragma: ['#!', 'shellcheck disable', 'shellcheck source', 'shfmt:']
+generated: ['@generated', 'DO NOT EDIT']

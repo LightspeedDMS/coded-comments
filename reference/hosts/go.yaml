@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: 'comment block directly above a declaration'
+exported: 'capitalised identifier, or method on an exported type, in a package not under internal/; unexported receiver is not exported'
+pragma: ['//go:', '//nolint', '// +build', 'cgo preamble']
+generated: ['Code generated', 'DO NOT EDIT']

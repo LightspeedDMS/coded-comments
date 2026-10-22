@@ -1,0 +1,7 @@
+marker: '--^ '
+line: '--'
+block: '/* */'
+doc: 'sp_addextendedproperty MS_Description'
+exported: 'object granted to another principal or documented as external API'
+pragma: ['/*+ hint */', 'SET ', 'GO', 'tSQLt', 'sqlfluff:']
+generated: ['DO NOT EDIT', 'auto-generated']

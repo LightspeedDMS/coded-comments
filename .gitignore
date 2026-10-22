@@ -1,0 +1,17 @@
+# Corpus file manifests and run logs with local paths stay local.
+.analysis/provenance.tsv
+.analysis/marker_scan_files.tsv
+.analysis/ratio_files.tsv
+.analysis/ratio_files_other.tsv
+.analysis/runs/*_red.txt
+.analysis/install_run.log
+
+# Internal working notes
+docs/HANDOFF.md
+
+# Local scratch and runtime output
+logs/
+.tmp/
+__pycache__/
+*.pyc
+.venv/

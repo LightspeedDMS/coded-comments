@@ -1,0 +1,63 @@
+version: 1
+tags: [inv, haz, why, ext, cpl, ord, sec, ref, perf, todo]
+markers:
+  hash: '#\^'
+  slash: '//\^'
+  dash: '--\^'
+hosts:
+  python: hash
+  shell: hash
+  typescript_javascript: slash
+  go: slash
+  rust: slash
+  csharp: slash
+  java: slash
+  pascal: slash
+  c: slash
+  cpp: slash
+  plsql: dash
+  postgresql: dash
+  tsql: dash
+  sqlite: dash
+parts:
+  word: '(?:`[^`\n\r]+`|[^\s;<>=!`])+'
+  operand: '{word}(?: {word})*'
+  op: '(?:=>|<=|>=|!=|<|>|=)'
+  clause: '{operand}(?:\s?{op}\s?{operand})?'
+  body: '{clause}(?:;{clause})*'
+  coded: '(?:^|\s){marker} (?:{tags}) {body}$'
+word_class_order: [quoted, issue, doc, path, symbol]
+word_class:
+  quoted: '`'
+  issue: '^#\d+$'
+  doc: '^doc:'
+  path: '/|\.(?:py|js|ts|tsx|jsx|go|rs|cs|java|c|h|cc|cpp|hpp|pas|sh|sql|md|yaml|yml|json|toml|xml|cfg|conf|ini|txt)(?::\S+)?$'
+  symbol: '_|[a-z][A-Z]|[A-Za-z_]\.[A-Za-z_]|::|\(\)$'
+budgets:
+  line_chars: 160
+  line_tokens: 40
+  run_lines: 3
+  coded_per_code: 0.10
+  min_code_lines: 50
+  diff_floor: 2
+  diff_per: 10
+violations:
+  - {id: FREE, sev: H, act: block, detect: structural}
+  - {id: SYNTAX, sev: H, act: block, detect: regex}
+  - {id: PROSE, sev: H, act: block, detect: mixed}
+  - {id: STALE, sev: H, act: block, detect: repository}
+  - {id: UNKNOWN, sev: M, act: warn, detect: repository}
+  - {id: VACUOUS, sev: M, act: warn, detect: judgment}
+  - {id: REDUNDANT, sev: M, act: warn, detect: judgment}
+  - {id: UNSUPPORTED, sev: M, act: warn, detect: judgment}
+  - {id: SCOPE, sev: M, act: warn, detect: structural}
+  - {id: DUP, sev: L, act: warn, detect: judgment}
+  - {id: DOCCAP, sev: L, act: warn, detect: judgment}
+  - {id: BUDGET, sev: L, act: warn, detect: structural}
+verdict:
+  block: any H
+  warn: any M or L
+  pass: none
+report:
+  finding: '^(?P<path>\S+):(?P<line>\d+) (?P<class>[A-Z]+) (?P<sev>[HML]) (?P<act>block|warn) (?P<detail>.+)$'
+  verdict: '^VERDICT (?:BLOCK|WARN|PASS) H=\d+ M=\d+ L=\d+$'

@@ -1,0 +1,8 @@
+== grammar_check
+58 example lines checked, 0 failures
+== rules_check
+rules check: 3 regexes, 12 violation classes, 14 hosts, 0 failures
+== selfcheck
+selfcheck: 30 examples in 12 files, 0 failures
+== paths
+writer path 1701 (target 2000), reviewer path 3202 (target 3500), tree 5533, [m: keys in reference/: 0

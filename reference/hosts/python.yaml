@@ -1,0 +1,7 @@
+marker: '#^ '
+line: '#'
+block: none
+doc: 'docstring: first statement of module, class, def'
+exported: '__all__, package __init__ re-export, or documented library entry point'
+pragma: [noqa, 'type: ignore', 'pragma: no cover', 'pylint: disable', 'fmt: off', 'mypy:']
+generated: ['@generated', 'DO NOT EDIT']

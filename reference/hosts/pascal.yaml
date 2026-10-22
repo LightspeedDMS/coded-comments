@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '{ } (* *)'
+doc: '/// XMLDoc or { } block above a declaration'
+exported: 'declaration in the unit interface section'
+pragma: ['{$', '(*$', '{%']
+generated: ['DO NOT EDIT', 'auto-generated']

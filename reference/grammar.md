@@ -1,0 +1,40 @@
+# coded-comments: grammar
+
+```
+coded   ::= marker SP tag SP clause ( ";" clause )*
+marker  ::= "#^" | "//^" | "--^"
+tag     ::= "inv" | "haz" | "why" | "ext" | "cpl" | "ord" | "sec" | "ref" | "perf" | "todo"
+clause  ::= operand ( SP? op SP? operand )?
+operand ::= word ( SP word )*
+word    ::= ( quoted | wchar )+
+quoted  ::= "`" qchar+ "`"
+qchar   ::= any character except "`", LF, CR
+wchar   ::= any visible character except ";" "<" ">" "=" "!" "`"
+op      ::= "=>" | "<=" | ">=" | "!=" | "<" | ">" | "="
+SP      ::= " "
+```
+
+Longest operator wins. No space after `;`. Inside backticks every character is literal and a quoted piece may touch
+plain characters: `` `Vec<u8>`.len() `` is one word. The host file gives the marker.
+
+## Anchors
+
+A word is an anchor by the first match:
+- quoted: its leading identifier must resolve (`Vec<u8>` resolves `Vec`);
+- issue: `#` and digits;
+- doc: `doc:` and an anchor;
+- path: contains `/` or ends in `py js ts tsx jsx go rs cs java c h cc cpp hpp pas sh sql md yaml yml json toml xml
+  cfg conf ini txt`, optional `:symbol`;
+- symbol: has `_`, an inner capital, `.` between name characters, `::`, or ends in `()`. `foo.bar` is a symbol.
+
+Any other word is plain.
+
+## Rules
+
+- S1 anchor: a line has at least one anchor or one operator.
+- S2 repeat: every physical line carries marker, tag and clauses. No continuation lines.
+- S3 scope: a run of coded lines directly above a declaration or statement governs it; a trailing coded comment
+  (marker preceded by whitespace) governs its own statement; a blank or uncoded line ends a run.
+- S4 freshness: an anchor that stops resolving makes the line STALE.
+- S5 operators: `=>` then; `<` before; `>` after; `<=` `>=` bounds; `=` is; `!=` differs. One per clause.
+- S6 forms: block comments are never coded. Coded syntax is not used inside prose docs.

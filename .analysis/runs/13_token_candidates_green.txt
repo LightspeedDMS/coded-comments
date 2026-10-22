@@ -1,0 +1,1 @@
+candidate tokens OK: 60 candidates x 2 encodings

@@ -1,0 +1,18 @@
+{
+ "_note": "Hand-curated from tool knowledge, NOT measured. Each entry: a syntax that already starts a comment with opener+sigil. Absence means none known to the author, not none existing.",
+ "at": ["Java JML //@ and /*@", "C Frama-C ACSL //@ and /*@", "Rust compiletest //@ directives", "TS/JS //@ts-ignore //@ts-check //@flow", "legacy JS //@ sourceMappingURL", "C Splint /*@"],
+ "bang": ["Rust //! inner doc", "Shell/Python #! shebang", "C/C++ Doxygen //! and /*!"],
+ "tilde": ["Rust compiletest //~ ERROR annotations"],
+ "pct": ["Python jupytext/Spyder #%% cell markers"],
+ "dollar": ["Pascal {$ directives", "Shell Sun Grid Engine #$ job directives"],
+ "plus": ["Oracle optimizer hints --+ and /*+"],
+ "star": ["decorative banners //**** and #****"],
+ "gt": ["R reprex output #>"],
+ "colon": ["Python Sphinx #: attribute docs", "Swift/Scala playground //:"],
+ "semi": ["Lisp/Scheme ;; and #; datum comments"],
+ "eq": ["Julia #= block comments"],
+ "pipe": ["Racket/Lisp #| block comments"],
+ "amp": [],
+ "caret": [],
+ "section": []
+}

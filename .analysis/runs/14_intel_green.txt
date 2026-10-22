@@ -1,0 +1,3 @@
+o200k_base {'glyph': 5271, 'words': 6055, 'short': 6055, 'positional': 3998, 'pipe': 4671}
+cl100k_base {'glyph': 5871, 'words': 5961, 'short': 5961, 'positional': 3998, 'pipe': 4671}
+intel glyph check OK: 300 real lines, verdict=reject

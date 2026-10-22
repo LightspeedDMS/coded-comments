@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: '/// or //! doc comment'
+exported: '`pub` item reachable from the crate root'
+pragma: ['rustfmt::skip', 'clippy::', '//~']
+generated: ['@generated', 'DO NOT EDIT']

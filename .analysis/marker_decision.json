@@ -1,0 +1,105 @@
+{
+ "sigil": "^",
+ "sigil_name": "caret",
+ "rule": "sigil = argmin over candidates with zero line-start collisions in the scanned corpus and no entry in known_collisions.json, of total marker overhead (tokens of opener+sigil+' '+body minus opener+' '+body, summed over bodies, openers and both encodings); ties broken by candidate order",
+ "candidates": {
+  "at": "@",
+  "caret": "^",
+  "tilde": "~",
+  "pct": "%",
+  "dollar": "$",
+  "bang": "!",
+  "pipe": "|",
+  "eq": "=",
+  "plus": "+",
+  "amp": "&",
+  "star": "*",
+  "gt": ">",
+  "colon": ":",
+  "semi": ";",
+  "section": "§"
+ },
+ "bodies": [
+  "inv x<=y",
+  "cpl src/a.py:f",
+  "haz keep timeout #12"
+ ],
+ "eligible": [
+  "caret",
+  "amp",
+  "section"
+ ],
+ "scope": "coded comments are LINE comments only: opener + sigil + space + body; block-comment forms are never coded",
+ "hosts": {
+  "python": {
+   "opener": "#",
+   "marker": "#^",
+   "regex": "(?:^|\\s)\\#\\^ \\S"
+  },
+  "typescript_javascript": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "shell": {
+   "opener": "#",
+   "marker": "#^",
+   "regex": "(?:^|\\s)\\#\\^ \\S"
+  },
+  "go": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "rust": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "csharp": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "java": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "pascal": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "c": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "cpp": {
+   "opener": "//",
+   "marker": "//^",
+   "regex": "(?:^|\\s)//\\^ \\S"
+  },
+  "plsql": {
+   "opener": "--",
+   "marker": "--^",
+   "regex": "(?:^|\\s)\\-\\-\\^ \\S"
+  },
+  "postgresql": {
+   "opener": "--",
+   "marker": "--^",
+   "regex": "(?:^|\\s)\\-\\-\\^ \\S"
+  },
+  "tsql": {
+   "opener": "--",
+   "marker": "--^",
+   "regex": "(?:^|\\s)\\-\\-\\^ \\S"
+  },
+  "sqlite": {
+   "opener": "--",
+   "marker": "--^",
+   "regex": "(?:^|\\s)\\-\\-\\^ \\S"
+  }
+ }
+}

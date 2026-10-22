@@ -1,0 +1,1 @@
+sample reproducible: 72 comments, 8 per stratum, batches A/B equal

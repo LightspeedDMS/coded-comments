@@ -1,0 +1,9 @@
+all.go: {'docs': 986, 'doc_lines': 2548, 'public_lines': 1694, 'private_lines': 851, 'unknown_lines': 3, 'inclusive_ratio': 0.182554}
+all.rust: {'docs': 711, 'doc_lines': 5309, 'public_lines': 1450, 'private_lines': 3859, 'unknown_lines': 0, 'inclusive_ratio': 0.507823}
+all.csharp: {'docs': 353, 'doc_lines': 1576, 'public_lines': 992, 'private_lines': 441, 'unknown_lines': 143, 'inclusive_ratio': 0.205469}
+all.java: {'docs': 275, 'doc_lines': 1940, 'public_lines': 1624, 'private_lines': 193, 'unknown_lines': 123, 'inclusive_ratio': 0.243736}
+excl_tests.go: {'docs': 713, 'doc_lines': 1973, 'public_lines': 1202, 'private_lines': 771, 'unknown_lines': 0, 'inclusive_ratio': 0.275319}
+excl_tests.rust: {'docs': 557, 'doc_lines': 4310, 'public_lines': 1450, 'private_lines': 2860, 'unknown_lines': 0, 'inclusive_ratio': 0.695884}
+excl_tests.csharp: {'docs': 353, 'doc_lines': 1576, 'public_lines': 992, 'private_lines': 441, 'unknown_lines': 143, 'inclusive_ratio': 0.205469}
+excl_tests.java: {'docs': 275, 'doc_lines': 1940, 'public_lines': 1624, 'private_lines': 193, 'unknown_lines': 123, 'inclusive_ratio': 0.243736}
+doc volume other hosts OK

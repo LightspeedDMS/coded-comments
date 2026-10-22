@@ -1,0 +1,2 @@
+python: 120 files, 7275 comment lines / 49208 code lines = 0.147842
+typescript_js: 83 files, 2415 comment lines / 14015 code lines = 0.172315

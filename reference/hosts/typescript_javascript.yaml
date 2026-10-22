@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: 'JSDoc/TSDoc /** */ before a declaration'
+exported: 'library (package.json main/exports/types, not private): `export`, `export { Local }`, public member of an exported class. App (otherwise): only what the package entry point re-exports; module-to-module `export` is internal'
+pragma: ['@ts-ignore', '@ts-expect-error', '@ts-nocheck', 'eslint-disable', 'prettier-ignore', '#region', '/// <reference']
+generated: ['@generated', 'DO NOT EDIT']

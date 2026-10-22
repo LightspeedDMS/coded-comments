@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: '/** */ or /// Doxygen before a declaration'
+exported: 'installed public header declaration a client can use: public members only, not private or client-unusable detail'
+pragma: ['#pragma', 'NOLINT', 'clang-format off', 'NOLINTNEXTLINE']
+generated: ['@generated', 'DO NOT EDIT']

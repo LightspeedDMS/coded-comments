@@ -1,0 +1,9 @@
+python excl tests: {'files': 120, 'comment_lines': 7275, 'code_lines': 49208}
+typescript_js excl tests: {'files': 83, 'comment_lines': 2415, 'code_lines': 14015}
+shell excl tests: {'files': 135, 'comment_lines': 4603, 'code_lines': 20355}
+go excl tests: {'test_files': 70, 'files': 64, 'comment_lines': 4249, 'code_lines': 15433}
+rust excl tests: {'test_files': 12, 'files': 48, 'comment_lines': 4954, 'code_lines': 7119}
+csharp excl tests: {'files': 60, 'comment_lines': 2750, 'code_lines': 13384}
+java excl tests: {'files': 78, 'comment_lines': 2247, 'code_lines': 9219}
+sql excl tests: {'files': 80, 'comment_lines': 974, 'code_lines': 1325}
+categories {'history_changelog': 4, 'restates_code': 22, 'narrates_steps': 7, 'hazard_guard': 7, 'public_api_doc': 10, 'external_constraint': 2, 'cross_file_coupling': 4, 'business_paraphrase': 1, 'tool_or_header': 1, 'invariant': 3, 'rationale_alternative': 2, 'ordering_lifecycle': 2, 'security_boundary': 4, 'unclear': 3} dispositions {'redundant': 34, 'valuable': 24, 'exempt': 11, 'uncertain': 3} test-file records 7

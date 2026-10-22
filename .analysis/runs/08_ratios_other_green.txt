@@ -1,0 +1,10 @@
+cpp: {'files': 0, 'comment_lines': 0, 'code_lines': 0}
+java: {'files': 78, 'comment_lines': 2247, 'code_lines': 9219}
+sql: {'files': 80, 'comment_lines': 974, 'code_lines': 1325}
+rust: {'files': 60, 'comment_lines': 6037, 'code_lines': 11888}
+c: {'files': 0, 'comment_lines': 0, 'code_lines': 0}
+go: {'files': 134, 'comment_lines': 6427, 'code_lines': 35206}
+pascal: {'files': 0, 'comment_lines': 0, 'code_lines': 0}
+shell: {'files': 135, 'comment_lines': 4603, 'code_lines': 20355}
+csharp: {'files': 60, 'comment_lines': 2750, 'code_lines': 13384}
+remaining-language ratios OK

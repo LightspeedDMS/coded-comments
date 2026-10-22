@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: '/** */ Javadoc before a declaration'
+exported: 'public member of a public type in a library package; with a module-info, the package must also be exported'
+pragma: ['@SuppressWarnings', 'NOPMD', 'CHECKSTYLE', '@formatter:off', 'noinspection']
+generated: ['@Generated', 'DO NOT EDIT']

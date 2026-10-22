@@ -1,0 +1,2 @@
+code-indexer: 3848 Claude-authored commits match git log
+claude-pace-maker: 341 Claude-authored commits match git log

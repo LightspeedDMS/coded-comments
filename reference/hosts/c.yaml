@@ -1,0 +1,7 @@
+marker: '//^ '
+line: '//'
+block: '/* */'
+doc: '/** */ or /// Doxygen before a declaration'
+exported: 'non-static declaration in an installed public header; static or internal helpers are not exported'
+pragma: ['#pragma', 'NOLINT', 'clang-format off', 'fallthrough', 'lint:']
+generated: ['@generated', 'DO NOT EDIT']

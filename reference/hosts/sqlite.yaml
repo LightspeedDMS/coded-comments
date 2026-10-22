@@ -1,0 +1,7 @@
+marker: '--^ '
+line: '--'
+block: '/* */'
+doc: none
+exported: 'schema object documented as external API'
+pragma: ['PRAGMA', '.read', 'sqlfluff:']
+generated: ['DO NOT EDIT', 'auto-generated']

@@ -1,0 +1,3 @@
+o200k_base: original=857 compressed=207 saved=650
+cl100k_base: original=852 compressed=200 saved=652
+redundant full-line excerpts=32, ledger token sums match

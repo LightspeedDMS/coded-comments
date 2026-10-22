@@ -1,0 +1,20 @@
+# Real comment compression experiment
+
+Draft coded lines are exploratory, not the final grammar. Originals are full enclosing comments from the read-only corpus files. Each selected record was labeled valuable in the frozen sample. Counts use tiktoken proxies for Claude and include comment syntax. They do not prove semantic equivalence of the drafts; review each before migration.
+
+| ID | Category | o200k original | o200k draft | cl100k original | cl100k draft |
+|---|---|---:|---:|---:|---:|
+| 01543994050bc513b7ec | cross_file_coupling | 65 [m:tok.real.01543994050bc513b7ec.original.o200k_base] | 26 [m:tok.real.01543994050bc513b7ec.compressed.o200k_base] | 65 [m:tok.real.01543994050bc513b7ec.original.cl100k_base] | 24 [m:tok.real.01543994050bc513b7ec.compressed.cl100k_base] |
+| d65b3916a3672dfb85b9 | ordering_lifecycle | 35 [m:tok.real.d65b3916a3672dfb85b9.original.o200k_base] | 17 [m:tok.real.d65b3916a3672dfb85b9.compressed.o200k_base] | 33 [m:tok.real.d65b3916a3672dfb85b9.original.cl100k_base] | 15 [m:tok.real.d65b3916a3672dfb85b9.compressed.cl100k_base] |
+| 06f029a9f140dc49da78 | cross_file_coupling | 18 [m:tok.real.06f029a9f140dc49da78.original.o200k_base] | 20 [m:tok.real.06f029a9f140dc49da78.compressed.o200k_base] | 18 [m:tok.real.06f029a9f140dc49da78.original.cl100k_base] | 19 [m:tok.real.06f029a9f140dc49da78.compressed.cl100k_base] |
+| acb4c5338c42055fc45c | external_constraint | 350 [m:tok.real.acb4c5338c42055fc45c.original.o200k_base] | 49 [m:tok.real.acb4c5338c42055fc45c.compressed.o200k_base] | 351 [m:tok.real.acb4c5338c42055fc45c.original.cl100k_base] | 47 [m:tok.real.acb4c5338c42055fc45c.compressed.cl100k_base] |
+| 16c980e52afdfa7f7764 | invariant | 53 [m:tok.real.16c980e52afdfa7f7764.original.o200k_base] | 22 [m:tok.real.16c980e52afdfa7f7764.compressed.o200k_base] | 53 [m:tok.real.16c980e52afdfa7f7764.original.cl100k_base] | 22 [m:tok.real.16c980e52afdfa7f7764.compressed.cl100k_base] |
+| 90419c465f2d1d4002b4 | hazard_guard | 220 [m:tok.real.90419c465f2d1d4002b4.original.o200k_base] | 20 [m:tok.real.90419c465f2d1d4002b4.compressed.o200k_base] | 218 [m:tok.real.90419c465f2d1d4002b4.original.cl100k_base] | 20 [m:tok.real.90419c465f2d1d4002b4.compressed.cl100k_base] |
+| 64a5c5d83e0d4552f2fc | hazard_guard | 54 [m:tok.real.64a5c5d83e0d4552f2fc.original.o200k_base] | 15 [m:tok.real.64a5c5d83e0d4552f2fc.compressed.o200k_base] | 53 [m:tok.real.64a5c5d83e0d4552f2fc.original.cl100k_base] | 15 [m:tok.real.64a5c5d83e0d4552f2fc.compressed.cl100k_base] |
+| e45785f19ed2d934ed49 | hazard_guard | 26 [m:tok.real.e45785f19ed2d934ed49.original.o200k_base] | 13 [m:tok.real.e45785f19ed2d934ed49.compressed.o200k_base] | 26 [m:tok.real.e45785f19ed2d934ed49.original.cl100k_base] | 13 [m:tok.real.e45785f19ed2d934ed49.compressed.cl100k_base] |
+| 003ca781c182cdd178af | rationale_alternative | 15 [m:tok.real.003ca781c182cdd178af.original.o200k_base] | 10 [m:tok.real.003ca781c182cdd178af.compressed.o200k_base] | 15 [m:tok.real.003ca781c182cdd178af.original.cl100k_base] | 10 [m:tok.real.003ca781c182cdd178af.compressed.cl100k_base] |
+| c2d05ec7931a65758e3f | cross_file_coupling | 21 [m:tok.real.c2d05ec7931a65758e3f.original.o200k_base] | 15 [m:tok.real.c2d05ec7931a65758e3f.compressed.o200k_base] | 20 [m:tok.real.c2d05ec7931a65758e3f.original.cl100k_base] | 15 [m:tok.real.c2d05ec7931a65758e3f.compressed.cl100k_base] |
+
+For these ten selected valuable comments, the drafts remove 650 o200k tokens [m:tok.real.total.saved.o200k_base] and 652 cl100k tokens [m:tok.real.total.saved.cl100k_base]. One short original expands; the total is dominated by long source blocks, so it is not a corpus-wide savings rate.
+
+Separate deletion estimate: 32 verified full-line excerpts labeled redundant in the frozen sample would remove 571 o200k tokens [m:tok.delete.redundant.o200k_base] or 563 cl100k tokens [m:tok.delete.redundant.cl100k_base]. This excludes inline comments and extractor false positives. It is a sampled-excerpt estimate, not a repository-wide saving estimate.
