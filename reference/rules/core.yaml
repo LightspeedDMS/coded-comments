@@ -1,5 +1,6 @@
 version: 1
-tags: [inv, haz, why, ext, cpl, ord, sec, ref, perf, todo]
+tags: [hazard, coupled, security, invariant, external, order, why, see, perf, todo]
+order_words: [before, after]
 markers:
   hash: '#\^'
   slash: '//\^'
@@ -24,7 +25,7 @@ parts:
   operand: '{word}(?: {word})*'
   op: '(?:=>|<=|>=|!=|<|>|=)'
   clause: '{operand}(?:\s?{op}\s?{operand})?'
-  body: '{clause}(?:;{clause})*'
+  body: '{clause}(?:; ?{clause})*'
   coded: '(?:^|\s){marker} (?:{tags}) {body}$'
 word_class_order: [quoted, issue, doc, path, symbol]
 word_class:

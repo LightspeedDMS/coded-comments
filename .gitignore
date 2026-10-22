@@ -10,6 +10,7 @@
 docs/HANDOFF.md
 
 # Local scratch and runtime output
+.claude/
 logs/
 .tmp/
 __pycache__/

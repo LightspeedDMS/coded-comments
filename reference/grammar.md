@@ -1,9 +1,9 @@
 # coded-comments: grammar
 
 ```
-coded   ::= marker SP tag SP clause ( ";" clause )*
+coded   ::= marker SP tag SP clause ( ";" SP? clause )*
 marker  ::= "#^" | "//^" | "--^"
-tag     ::= "inv" | "haz" | "why" | "ext" | "cpl" | "ord" | "sec" | "ref" | "perf" | "todo"
+tag     ::= "hazard" | "coupled" | "security" | "invariant" | "external" | "order" | "why" | "see" | "perf" | "todo"
 clause  ::= operand ( SP? op SP? operand )?
 operand ::= word ( SP word )*
 word    ::= ( quoted | wchar )+
@@ -14,7 +14,7 @@ op      ::= "=>" | "<=" | ">=" | "!=" | "<" | ">" | "="
 SP      ::= " "
 ```
 
-Longest operator wins. No space after `;`. Inside backticks every character is literal and a quoted piece may touch
+Longest operator wins. Inside backticks every character is literal and a quoted piece may touch
 plain characters: `` `Vec<u8>`.len() `` is one word. The host file gives the marker.
 
 ## Anchors
@@ -31,10 +31,11 @@ Any other word is plain.
 
 ## Rules
 
-- S1 anchor: a line has at least one anchor or one operator.
+- S1 anchor: a line has at least one anchor, one operator, or the word `before` or `after`.
 - S2 repeat: every physical line carries marker, tag and clauses. No continuation lines.
 - S3 scope: a run of coded lines directly above a declaration or statement governs it; a trailing coded comment
   (marker preceded by whitespace) governs its own statement; a blank or uncoded line ends a run.
 - S4 freshness: an anchor that stops resolving makes the line STALE.
-- S5 operators: `=>` then; `<` before; `>` after; `<=` `>=` bounds; `=` is; `!=` differs. One per clause.
+- S5 operators: `=>` leads to (causes, then, returns, requires); `=` is; `!=` is not; `<` `<=` `>` `>=` compare
+  values. Order uses the words `before` and `after`. One operator per clause.
 - S6 forms: block comments are never coded. Coded syntax is not used inside prose docs.

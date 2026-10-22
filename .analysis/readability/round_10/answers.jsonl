@@ -1,0 +1,50 @@
+{"id":1,"explanation":"The nonce check in verify rejects tokens whose nonce is already in seen. Removing it would let a token be replayed. #123 is the related issue.","unsure":""}
+{"id":2,"explanation":"Call ensure_key_salt before constructing KeyManager. If salt setup fails, abort startup instead of initializing the manager.","unsure":""}
+{"id":3,"explanation":"Before allocating buf, topN must be no greater than maxSimpleTopN so the resulting Chunk slice stays at or below 1 MiB. maxSimpleTopN is the named limit.","unsure":""}
+{"id":4,"explanation":"When meta.abi_version is absent, abi must remain None; it must not default to the current ABI. #1784 is the related issue.","unsure":""}
+{"id":5,"explanation":"TLP reads /etc/tlp.conf after files matching /etc/tlp.d/*.conf, so values in the main file override the drop-in written at /etc/tlp.d/90-power.conf.","unsure":""}
+{"id":6,"explanation":"These settings require TLP version 1.10 or later. _AC, _BAT and _SAV identify profile-specific settings. Leaving the AC setting unset preserves the GNOME Performance toggle; this command sets only CPU_ENERGY_PERF_POLICY_ON_BAT.","unsure":""}
+{"id":7,"explanation":"On a JSON parse error, return null so the caller can log a warning; throwing here would bypass that path.","unsure":""}
+{"id":8,"explanation":"When an AllowedTools set is in force, remove --dangerously-skip-permissions from args because that flag bypasses --allowedTools. AllowedTools is the configured tool set; the two flags are command-line options.","unsure":""}
+{"id":9,"explanation":"For the verdicts returned by thunk_is_dead, consult the verdict table at is_definitely_dead_code in rust/xray-core/src/compiler/graph_preamble.rs. That path identifies a file and the text after the colon identifies a symbol.","unsure":""}
+{"id":10,"explanation":"repos_skipped is currently initialized to zero; it should be derived from the domains-to-repos mapping. #874 tracks that work.","unsure":""}
+{"id":11,"explanation":"index.regex_query uses a linear-time DFA for this pattern search, so its regex matching does not backtrack. regex_query names the method and DFA names the matching approach.","unsure":""}
+{"id":12,"explanation":"Keep the token-family table schema in this SQL coupled with RefreshTokenSqliteBackend._ensure_schema in src/storage/refresh_token_backend.py. Changes to these tables may require changes there; the path identifies the Python file and the text after the colon identifies the method.","unsure":""}
+{"id":13,"explanation":"The vendor batch API accepts at most 500 items, which is why MAX_BATCH is 500. doc:vendor-api#limits points to the limits section of the vendor-api documentation.","unsure":""}
+{"id":14,"explanation":"Keep these Status values in sync with STATUS_LABELS in web/src/status.ts. Their iota order determines stored integer values, so reordering them would change the meaning of existing stored values. #88 is the related issue.","unsure":""}
+{"id":15,"explanation":"Keep tenant_id first and created_at second in this index; that column order matches the orders_by_tenant query. orders_by_tenant names the query being served.","unsure":""}
+{"id":16,"explanation":"TList.Add relies on FCount never exceeding Length(FItems). Grow is the named operation that preserves that capacity condition.","unsure":""}
+{"id":17,"explanation":"Call _flush before closing the sink because closing drops _buf. Reversing the calls could discard buffered data.","unsure":""}
+{"id":18,"explanation":"Because userPath comes from a request, resolve it under workspaceRoot and reject paths containing .. that escape that root. The shown line resolves and normalizes the path; the comment also requires an escape check.","unsure":""}
+{"id":19,"explanation":"Drain ring before freeing buf. If buf is freed first, the IRQ handler could still use it and cause a use-after-free. #2201 is the related issue.","unsure":""}
+{"id":20,"explanation":"Reserve capacity for n items before adding them so the vector needs one allocation; growth during push_back accounted for 40% of the measured profile. doc:perf-notes#ingest points to the ingest section of the performance notes.","unsure":""}
+{"id":21,"explanation":"Use HOLDLOCK on this SQL Server MERGE to prevent concurrent upserts from racing. doc:mssql-merge#concurrency points to the concurrency section of the MERGE documentation.","unsure":""}
+{"id":22,"explanation":"Use an autonomous transaction for the audit write so its row survives if the caller rolls back its own transaction.","unsure":""}
+{"id":23,"explanation":"For the SQLite schema change, rebuild the table because SQLite ALTER TABLE cannot drop the relevant constraints. This CREATE TABLE starts the replacement table. doc:sqlite-alter#otheralter points to the referenced ALTER TABLE documentation section.","unsure":""}
+{"id":24,"explanation":"Poll every five seconds instead of relying on inotify because NFS mounts emit no inotify events for this purpose. The wait(5) call sets that interval.","unsure":""}
+{"id":25,"explanation":"Keep the for...of loop when awaiting run(job). Using await inside forEach would let errors escape the surrounding try/catch.","unsure":""}
+{"id":26,"explanation":"A decoded Vec<u8> frame must have length no greater than MAX_FRAME. read_frame's decoder rejects larger frames; MAX_FRAME is the named size limit.","unsure":""}
+{"id":27,"explanation":"Register drainHook before pool.start() so a SIGTERM can trigger a hook that drains the pool after it starts.","unsure":""}
+{"id":28,"explanation":"Move backoff's retry policy into configuration. The task is done when Default in internal/retry/policy.go reads that configuration; the path identifies a Go file and the text after the colon identifies the symbol.","unsure":""}
+{"id":29,"explanation":"Issue #412 contains the full matrix of allowed transitions among the LeaseState values Active, Released and Stale.","unsure":""}
+{"id":30,"explanation":"Pass the token to tool login through standard input, as --token-stdin requests. Never put it in command-line arguments because ps exposes argv to other users.","unsure":""}
+{"id":31,"explanation":"Create app_reader before granting it SELECT access. Migration 042 assumes that role already exists.","unsure":""}
+{"id":32,"explanation":"Make on_event idempotent because Stripe may retry the same webhook for three days. doc:stripe#webhook-retries points to the webhook-retries section of the Stripe documentation.","unsure":""}
+{"id":33,"explanation":"Compare the MAC values sig and expected with hmac.Equal for constant-time comparison. Using == could leak information through timing.","unsure":""}
+{"id":34,"explanation":"Build CodeGraph once per index, with work proportional to the number of edges. Do not rebuild it for each query.","unsure":""}
+{"id":35,"explanation":"The packed TCustomerRec layout is used by saved .dat files. Changing that layout would break existing files unless FILE_VERSION is bumped; FILE_VERSION names the file-format version.","unsure":""}
+{"id":36,"explanation":"Change MSG_MAX and MSG_MAX_WIRE together. MSG_MAX_WIRE is defined in proto/messages.h, and the two limits are coupled.","unsure":""}
+{"id":37,"explanation":"handler relies on session.userId being non-null after authMiddleware has run. authMiddleware is the named middleware that establishes that condition.","unsure":""}
+{"id":38,"explanation":"Keep the cache check and put inside this synchronized block so they are atomic together. A ConcurrentHashMap by itself would not make that sequence atomic.","unsure":""}
+{"id":39,"explanation":"Because the repository alias comes from a user, validate raw against the registry before joining it to a path. #1996 is the related issue.","unsure":""}
+{"id":40,"explanation":"Payment Amount must be nonnegative. Represent refunds as separate rows with Kind = 'R', rather than as negative amounts in this INSERT.","unsure":""}
+{"id":41,"explanation":"Set the stop flag before joining worker_. Without the signal to stop, worker_.join() could block forever.","unsure":""}
+{"id":42,"explanation":"The GitHub API limit described here is 5,000 requests per hour per token. The 720 ms limiter interval corresponds to that rate. doc:github-rest#rate-limits points to the rate-limits section of the GitHub REST documentation.","unsure":""}
+{"id":43,"explanation":"Stop the cidx service before installing a replacement binary at /usr/local/bin/cidx. Replacing the binary while it is running could fail with “Text file busy.”","unsure":""}
+{"id":44,"explanation":"Do not share _lease across jobs: doing so could leak credentials between users. #77 is the related issue.","unsure":""}
+{"id":45,"explanation":"Keep len(ids) at or below 999 when executing this DELETE, because the comment treats 999 as SQLite's per-statement bound-variable limit. Each ID is supplied as a bound variable.","unsure":""}
+{"id":46,"explanation":"If cgroup.create(limit) fails because the memory estimate is bad, log the error and let the job continue instead of aborting it.","unsure":""}
+{"id":47,"explanation":"Remove the legacy /v1/jobs route. #530 tracks that work; /v1 is the route version prefix.","unsure":""}
+{"id":48,"explanation":"The session model and the reason sessions are per tab are documented at doc:adr-007#session-model, an anchor in ADR 007. The comment applies to SessionRegistry.","unsure":""}
+{"id":49,"explanation":"This partial index includes only leases whose released_at is NULL. It made active-lease lookups 30 times faster, so keep that WHERE condition when maintaining the index.","unsure":""}
+{"id":50,"explanation":"Keep EVENT_TYPES synchronized with EVENT_LABELS in web/src/events.ts and with docs/events.md. Those paths identify the TypeScript label definition and the events documentation.","unsure":""}

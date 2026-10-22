@@ -101,9 +101,9 @@ Feature: apply line, block and trailing proposals
     And the apply report lists every file as applied
 
   Scenario: Trailing comments stay trailing
-    Given "MAX_BATCH = 500  # vendor caps batches at 500" with a REWRITE line "#^ ext vendor batch API<=500 items"
+    Given "MAX_BATCH = 500  # vendor caps batches at 500" with a REWRITE line "#^ external vendor batch API <= 500 items"
     When I apply
-    Then the line becomes "MAX_BATCH = 500  #^ ext vendor batch API<=500 items"
+    Then the line becomes "MAX_BATCH = 500  #^ external vendor batch API <= 500 items"
 
   Scenario: Prose after a pragma is removed and the pragma bytes stay
     Given "x = compute()  # noqa: E501 vendor URL cannot wrap" whose prose unit has a DROP proposal
@@ -113,10 +113,10 @@ Feature: apply line, block and trailing proposals
 
   Scenario: Rewritten pragma prose goes above the governed statement
     Given "// eslint-disable-next-line no-console -- CI log scraper reads stdout" directly above "console.log(x);"
-    And the prose unit has a REWRITE proposal with the line "//^ ext CI log scraper=>reads stdout"
+    And the prose unit has a REWRITE proposal with the line "//^ external CI log scraper => reads stdout"
     When I apply
     Then the pragma line reads "// eslint-disable-next-line no-console"
-    And "//^ ext CI log scraper=>reads stdout" is on the line directly above the pragma line, at the statement's indentation
+    And "//^ external CI log scraper => reads stdout" is on the line directly above the pragma line, at the statement's indentation
     And the pragma line stays directly above "console.log(x);"
     And verification passes
 

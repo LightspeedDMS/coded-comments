@@ -1,0 +1,50 @@
+{"id":1,"explanation":"The nonce check in verify must stay: rejecting a token whose nonce is in seen prevents replay attacks. #123 is the related issue.","unsure":""}
+{"id":2,"explanation":"Call ensure_key_salt before constructing KeyManager. If salt setup fails, startup must stop.","unsure":""}
+{"id":3,"explanation":"Before allocating buf, topN must be no greater than maxSimpleTopN so the resulting slice stays at or below 1 MiB.","unsure":""}
+{"id":4,"explanation":"If meta.abi_version is missing, the mapping must produce None. Treating it as the current ABI would be dangerous. #1784 is the related issue.","unsure":""}
+{"id":5,"explanation":"The external TLP configuration file /etc/tlp.conf is read after files matching /etc/tlp.d/*.conf, so its settings can override values written to the drop-in at /etc/tlp.d/90-power.conf.","unsure":""}
+{"id":6,"explanation":"These TLP settings require version 1.10 or later. _AC, _BAT and _SAV are profile suffixes. Leaving the _AC setting unset preserves GNOME’s Performance toggle; this command sets only the _BAT setting.","unsure":"The comment does not define what the _SAV profile represents."}
+{"id":7,"explanation":"On a JSON parse error, this catch block deliberately returns null; its caller is responsible for logging the warning.","unsure":""}
+{"id":8,"explanation":"When AllowedTools is set, remove --dangerously-skip-permissions from the arguments because that flag bypasses --allowedTools. The comment applies to RemoveSkipPermissions.","unsure":""}
+{"id":9,"explanation":"For the meaning of this function’s dead-code verdicts, consult the verdict table associated with is_definitely_dead_code in rust/xray-core/src/compiler/graph_preamble.rs. The path identifies a file and the name after the colon identifies a symbol.","unsure":""}
+{"id":10,"explanation":"Replace the fixed repos_skipped value with a count derived from the domains-to-repos mapping. #874 tracks that work.","unsure":""}
+{"id":11,"explanation":"index.regex_query uses a linear-time DFA and does not backtrack; the comment records the performance behavior of this query.","unsure":""}
+{"id":12,"explanation":"Keep this token-family table schema coordinated with RefreshTokenSqliteBackend._ensure_schema in src/storage/refresh_token_backend.py. The path identifies the file and the name after the colon identifies the class method.","unsure":""}
+{"id":13,"explanation":"The vendor batch API accepts at most 500 items, which is why MAX_BATCH is 500. doc:vendor-api#limits points to the limits anchor in the vendor API documentation.","unsure":""}
+{"id":14,"explanation":"Keep these Status values coordinated with STATUS_LABELS in web/src/status.ts. Reordering the iota constants changes the meanings of already stored integer values. #88 is the related issue.","unsure":""}
+{"id":15,"explanation":"The index must put tenant_id before created_at to match the orders_by_tenant query. That ordering applies to the CREATE INDEX statement.","unsure":"The comment names orders_by_tenant but gives no file path, so its exact location is unspecified."}
+{"id":16,"explanation":"TList.Add must maintain FCount at or below Length(FItems); Grow preserves that bound when the item storage expands.","unsure":""}
+{"id":17,"explanation":"Call _flush before closing the sink because closing drops _buf. The order in close prevents buffered data from being lost.","unsure":""}
+{"id":18,"explanation":"A path supplied by a request must be resolved under workspaceRoot, and paths containing .. that escape that root must be rejected. The shown line resolves and normalizes userPath; the comment also requires an escape check.","unsure":""}
+{"id":19,"explanation":"Drain the ring before freeing buf. Freeing buf first could let the interrupt handler use freed memory. #2201 is the related issue.","unsure":""}
+{"id":20,"explanation":"Reserve space for n items up front to use one allocation; repeated push_back growth accounted for 40% of the measured profile. doc:perf-notes#ingest points to the ingest anchor in the performance notes.","unsure":""}
+{"id":21,"explanation":"Use HOLDLOCK on this SQL Server MERGE because concurrent upserts can race without it. doc:mssql-merge#concurrency points to the concurrency anchor in the MERGE documentation.","unsure":""}
+{"id":22,"explanation":"The autonomous transaction is deliberate: it lets the audit row survive even if the caller rolls back its transaction. The comment applies to the PRAGMA.","unsure":""}
+{"id":23,"explanation":"SQLite ALTER TABLE cannot drop the needed constraints, so this migration rebuilds the table, starting with leases_new. doc:sqlite-alter#otheralter points to the relevant SQLite ALTER documentation anchor.","unsure":""}
+{"id":24,"explanation":"The loop polls every five seconds because NFS mounts do not emit the inotify events this code would need. That explains the wait(5) interval.","unsure":""}
+{"id":25,"explanation":"Keep the awaited jobs in a for...of loop. Awaiting inside forEach would let errors escape the intended try/catch.","unsure":""}
+{"id":26,"explanation":"Every decoded Vec<u8> frame must have length at most MAX_FRAME; the decoder rejects larger frames. The comment applies to the value returned by read_frame.","unsure":""}
+{"id":27,"explanation":"Register the shutdown hook before starting the pool. The hook drains the pool when the process receives SIGTERM.","unsure":""}
+{"id":28,"explanation":"Move the fixed retry delay into configuration. The task is complete when Default in internal/retry/policy.go reads that configuration; the path identifies the file and Default is the named symbol.","unsure":""}
+{"id":29,"explanation":"Issue #412 contains the full matrix of transitions among the LeaseState values Active, Released and Stale.","unsure":""}
+{"id":30,"explanation":"Pass the token through standard input, never as a command-line argument. Other users can see arguments through ps; --token-stdin avoids putting the token there.","unsure":""}
+{"id":31,"explanation":"Create app_reader before granting it SELECT access. Migration 042 assumes that role already exists.","unsure":""}
+{"id":32,"explanation":"Stripe may retry a webhook for three days, so on_event must handle repeated delivery without duplicating its effect. doc:stripe#webhook-retries points to the webhook-retries anchor in the Stripe documentation.","unsure":""}
+{"id":33,"explanation":"Compare the MACs using hmac.Equal because it runs in constant time; using == would reveal timing information. The comment applies to the signature check.","unsure":""}
+{"id":34,"explanation":"Build CodeGraph once per index, at a cost proportional to the number of edges. Do not rebuild it for each query.","unsure":""}
+{"id":35,"explanation":"Changing the packed TCustomerRec layout would make saved .dat files incompatible. Bump FILE_VERSION if the layout changes.","unsure":""}
+{"id":36,"explanation":"Change MSG_MAX and MSG_MAX_WIRE together. MSG_MAX_WIRE is the symbol in proto/messages.h that is coupled to this definition.","unsure":""}
+{"id":37,"explanation":"After authMiddleware runs, session.userId must be non-null when handler executes.","unsure":""}
+{"id":38,"explanation":"The synchronized block is deliberate because the cache’s check-then-put operation must be atomic. The comment explains the choice of synchronization over ConcurrentHashMap.","unsure":""}
+{"id":39,"explanation":"Because the repository alias comes from a user, validate it against the registry before joining it into a path. #1996 is the related security issue.","unsure":""}
+{"id":40,"explanation":"Payment Amount must be nonnegative. A refund is represented as a separate row with Kind = 'R', rather than by inserting a negative amount.","unsure":""}
+{"id":41,"explanation":"Set the stop flag before joining the worker. Otherwise the worker may keep running and join may block forever.","unsure":""}
+{"id":42,"explanation":"GitHub’s API limit is 5,000 requests per hour per token; the limiter is configured around that external limit. doc:github-rest#rate-limits points to the rate-limits anchor in the GitHub REST documentation.","unsure":""}
+{"id":43,"explanation":"Stop the cidx service before replacing its binary. Replacing the binary while it is running can fail with “Text file busy.”","unsure":""}
+{"id":44,"explanation":"Sharing _lease across jobs can expose one user’s credentials to another. #77 is the related issue.","unsure":""}
+{"id":45,"explanation":"The ids passed to this DELETE must contain no more than 999 values because the comment treats 999 as SQLite’s bound-variable limit for one statement.","unsure":""}
+{"id":46,"explanation":"If cgroup.create fails, log a warning and let the job continue. This deliberately tolerates a bad memory estimate instead of aborting the job.","unsure":""}
+{"id":47,"explanation":"Remove the legacy /v1/jobs route. #530 tracks that work.","unsure":""}
+{"id":48,"explanation":"The session model decision, including why sessions are per tab, is documented at the session-model anchor in doc:adr-007. The comment applies to SessionRegistry.","unsure":""}
+{"id":49,"explanation":"This partial index covers only rows where released_at is NULL and made active-lease lookups 30 times faster. The WHERE clause is the condition that makes the index partial.","unsure":""}
+{"id":50,"explanation":"Keep EVENT_TYPES coordinated with EVENT_LABELS in web/src/events.ts and with docs/events.md. The path and symbol reference identify the web labels; the second path identifies the events documentation.","unsure":""}

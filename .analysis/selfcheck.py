@@ -10,9 +10,8 @@ import grammar_check as gc
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "reference"
-TAGS = "inv|haz|why|ext|cpl|ord|sec|ref|perf|todo"
-LINE = re.compile(r"(?:^|\s)((?:#\^|//\^|--\^) (?:%s) \S.*)$" % TAGS)
-INLINE = re.compile(r"`((?:#\^|//\^|--\^) (?:%s) [^`]+)`" % TAGS)
+LINE = re.compile(r"(?:^|\s)((?:#\^|//\^|--\^) (?:%s) \S.*)$" % gc.TAGS)
+INLINE = re.compile(r"`((?:#\^|//\^|--\^) (?:%s) [^`]+)`" % gc.TAGS)
 SCANNED = [REF / "ENTRY.md", REF / "index.md", REF / "what.md", REF / "how.md", REF / "migrate.md",
            REF / "reviewer.md", REF / "exemptions.md", REF / "grammar.md", ROOT / "README.md",
            ROOT / "docs" / "design.md", ROOT / "docs" / "open-questions.md", ROOT / "docs" / "evidence.md"]

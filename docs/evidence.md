@@ -35,14 +35,14 @@ labeler agreed on 5 of 10 categories and 8 of 10 export judgments.
 
 ## Tags
 
-Hits in the 72 comments / 36 docs: `haz` 7/0, `cpl` 4/2, `sec` 4/1, `inv` 3/5, `ext` 2/0, `ord` 2/2, `why` 2/1, `ref`
-0/3 [m:cat.all.hazard_guard] [m:cat.all.cross_file_coupling] [m:cat.all.security_boundary] [m:cat.all.invariant]
+Hits in the 72 comments / 36 docs: `hazard` 7/0, `coupled` 4/2, `security` 4/1, `invariant` 3/5, `external` 2/0,
+`order` 2/2, `why` 2/1, `see` 0/3 [m:cat.all.hazard_guard] [m:cat.all.cross_file_coupling] [m:cat.all.security_boundary] [m:cat.all.invariant]
 [m:cat.all.external_constraint] [m:cat.all.ordering_lifecycle] [m:cat.all.rationale_alternative]
 [m:docsample.cat.reference]. `perf` and `todo` had none in the frozen samples; a later keyword search of the sampled
 files found [m:search.todo_lines] `TODO` lines and at least [m:search.perf_keyword_lines] perf-keyword lines (a lower
-bound), and real pairs below. Tag-word cost, o200k/cl100k: `inv` 1/1, `haz` 1/2, `why` 1/1, `ext` 1/1, `cpl` 2/2,
-`ord` 1/1, `sec` 1/1, `ref` 1/1, `perf` 1/1, `todo` 1/1 [m:tok.cand.tag_inv.o200k_base]
-[m:tok.cand.tag_haz.cl100k_base] [m:tok.cand.tag_cpl.o200k_base]; long words cost the same or more.
+bound), and real pairs below. The tags were first abbreviated (`inv`, `haz`, `cpl`...; `cpl` cost 2 tokens
+[m:tok.cand.tag_cpl.o200k_base]). The full words used now (`hazard coupled security invariant external order why see
+perf todo`) each cost 1 token in o200k and cl100k (`.analysis/readability/`), so readability costs nothing here.
 
 Marker `^` was chosen by measured overhead and zero corpus collisions (`.analysis/marker_decision.json`). The
 pace-maker glyph intel style cost 5,271 o200k tokens against 3,998 for positional ASCII over 300 real lines, so it
@@ -51,41 +51,45 @@ chosen over alternatives that differ by at most 6 tokens [m:sep.total.semi.o200k
 [m:sep.total.comma.o200k_base]. The backtick literal costs 30 tokens bare against 42 quoted for eight items
 [m:bt.total.raw.o200k_base] [m:bt.total.quoted.o200k_base].
 
-## Before and after (real comments, final grammar)
+## Before and after (real comments)
 
 Original text against kept lines plus coded lines; a pragma or shebang the case kept stays.
 
 ```coded
---^ cpl token-family tables=src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
-#^ ord ensure_encryption_key_salt<manager init;failure=>abort startup
-//^ inv topN<=maxSimpleTopN;slice<=1MiB
-//^ haz missing abi_version=>None not current ABI;#1784
-#^ ext /etc/tlp.conf read last=>wins over /etc/tlp.d/*.conf
-#^ ext TLP>=1.10;_AC/_BAT/_SAV=profile suffix
-#^ ext _AC unset=>GNOME Performance toggle
-//^ why parse error=>null;caller=logs warning
-//^ sec allowed-tools list set=>strip --dangerously-skip-permissions;flag bypasses --allowedTools
-//^ ref rust/xray-core/src/compiler/graph_preamble.rs:is_definitely_dead_code;verdict table
-#^ todo derive repos_skipped;domains-to-repos mapping;#874
-#^ perf regex_query=linear time DFA;no backtracking
+--^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
+#^ order ensure_encryption_key_salt before manager init; failure => abort startup
+//^ invariant topN <= maxSimpleTopN; slice <= 1MiB
+//^ hazard missing abi_version must parse as None, not current ABI; #1784
+#^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
+#^ external TLP >= 1.10 required; _AC/_BAT/_SAV are profile suffixes
+#^ external leaving _AC unset keeps GNOME Performance toggle working
+//^ why return null, not throw; parse error => caller logs warning
+//^ security allowed-tools list set => strip --dangerously-skip-permissions; that flag bypasses --allowedTools
+//^ see rust/xray-core/src/compiler/graph_preamble.rs:is_definitely_dead_code; verdict table
+#^ todo derive repos_skipped from domains-to-repos mapping; #874
+#^ perf regex_query = linear-time DFA; no backtracking
 ```
 
-| tag | original | tokens before -> after (o200k / cl100k) |
+The per-case counts below were measured on the earlier compact form of these lines (abbreviated tags, `<` for
+"before", no spaces). The readable form above costs 230 o200k / 228 cl100k tokens against 218 / 217 compact (+5.5%),
+still 73% below the 868-token originals.
+
+| tag | original | tokens before -> after, compact form (o200k / cl100k) |
 |---|---|---|
-| `cpl` | 3-line SQL banner naming the creator | 21 -> 32 / 20 -> 32 |
-| `ord` | 2-line story note on seeding a key file | 35 -> 17 / 33 -> 16 |
-| `inv` | 3-line CodeQL false-positive note (pragma kept) | 53 -> 26 / 53 -> 27 |
-| `haz` | 3-line bug note on legacy metadata | 54 -> 15 / 53 -> 15 |
-| `ext` | 21-line shell header on TLP precedence (shebang kept) | 350 -> 59 / 351 -> 59 |
+| `coupled` | 3-line SQL banner naming the creator | 21 -> 32 / 20 -> 32 |
+| `order` | 2-line story note on seeding a key file | 35 -> 17 / 33 -> 16 |
+| `invariant` | 3-line CodeQL false-positive note (pragma kept) | 53 -> 26 / 53 -> 27 |
+| `hazard` | 3-line bug note on legacy metadata | 54 -> 15 / 53 -> 15 |
+| `external` | 21-line shell header on TLP precedence (shebang kept) | 350 -> 59 / 351 -> 59 |
 | `why` | 1-line error-handling note | 15 -> 12 / 15 -> 12 |
-| `sec` | 6-line XML doc on a private helper | 91 -> 23 / 91 -> 23 |
-| `ref` | 7-line private doc restating another function | 128 -> 23 / 128 -> 23 |
-| `todo` | 2-line TODO with a deferral note (an `inv` for the contract was dropped: the call passes literal 0) | 43 -> 16 / 43 -> 16 |
+| `security` | 6-line XML doc on a private helper | 91 -> 23 / 91 -> 23 |
+| `see` | 7-line private doc restating another function | 128 -> 23 / 128 -> 23 |
+| `todo` | 2-line TODO with a deferral note (an `invariant` for the contract was dropped: the call passes literal 0) | 43 -> 16 / 43 -> 16 |
 | `perf` | 4-line note on a DFA regex engine | 78 -> 13 / 79 -> 13 |
 | all 10 | | 868 -> 236 / 866 -> 236 |
 
 Totals [m:pair.total.orig.o200k_base] -> [m:pair.total.after.o200k_base] (o200k), [m:pair.total.orig.cl100k_base] ->
-[m:pair.total.after.cl100k_base] (cl100k): about 71% fewer on this hand-picked set, not a corpus rate. `cpl` grew
+[m:pair.total.after.cl100k_base] (cl100k): about 71% fewer on this hand-picked set, not a corpus rate. `coupled` grew
 because a resolvable path costs more than the stale short name it replaced. Real stale-reference case: a migration
 comment named `RefreshTokenBackend._ensure_schema`; the protocol class has no such method, the method is declared on
 `RefreshTokenSqliteBackend`.
@@ -96,7 +100,7 @@ Of 18 lexically public doc spans in the sample, 6 were truly exported and 7 were
 [m:docsample.lex.public.export.no]; 5 stayed undecided. In Rust (tests excluded) 2,860 lexically private against 1,450
 lexically public doc lines [m:doc.rust.excl_tests.private_lines] [m:doc.rust.excl_tests.public_lines]; the truly
 exported share is smaller still. Corpus case behind the pragma rule: a Go comment `// codeql[...] False positive: topN
-is bounded ...` kept its pragma and moved the explanation to `//^ inv topN<=maxSimpleTopN;slice<=1MiB`.
+is bounded ...` kept its pragma and moved the explanation to `//^ invariant topN <= maxSimpleTopN; slice <= 1MiB`.
 
 ## Budgets
 
@@ -127,17 +131,18 @@ that choice are in `grammar-examples.md`.
 
 ## Load paths (Amendment 6 targets)
 
-Before the restructure the installed tree was about 10,100 o200k tokens in 8 files with 64 citation keys; after it is
-5,533 tokens in 23 files with 0 citation keys (`.analysis/measure_paths.py`, `numbers.json` keys `path.*`).
-Files, o200k: ENTRY 121, index 165, what 667, how 884, grammar 526, reviewer 753, exemptions 320, core.yaml 786,
-migrate 234, hosts 53 (shell) to 100 (typescript_javascript), all 14 under the 150 target.
+Before the restructure the installed tree was about 10,100 o200k tokens in 8 files with 64 citation keys. After the
+restructure and the readability change it is 6,072 tokens in 24 files with 0 citation keys
+(`.analysis/measure_paths.py`, `numbers.json` keys `path.*`). Files, o200k: ENTRY 148, index 178, what 671, how 969,
+grammar 556, reviewer 754, exemptions 320, core.yaml 795, migrate 234, examples 337, hosts 53 (shell) to 133
+(typescript_javascript), all 14 under the 150 target.
 
 | path | files | tokens | cap | target |
 |---|---|---|---|---|
-| writer | what + how + a host file | 1,701 | with a 150 allowance | 2,000 |
-| writer, largest host | the same with typescript_javascript (100) | 1,651 | measured | 2,000 |
-| reviewer | reviewer + what + core.yaml + grammar + exemptions + a host file | 3,202 | with a 150 allowance | 3,500 |
-| reviewer, largest host | the same with typescript_javascript (100) | 3,152 | measured | 3,500 |
-| entry snippet | `ENTRY.md` | 121 (cl100k 120) | measured | 150 |
+| writer | what + how + a host file | 1,790 | with a 150 allowance | 2,000 |
+| writer, largest host | the same with typescript_javascript (133) | 1,773 | measured | 2,000 |
+| reviewer | reviewer + what + core.yaml + grammar + exemptions + a host file | 3,246 | with a 150 allowance | 3,500 |
+| reviewer, largest host | the same with typescript_javascript (133) | 3,229 | measured | 3,500 |
+| entry snippet | `ENTRY.md` | 148 (cl100k 147) | measured | 150 |
 
 Counts are tiktoken o200k, a proxy for Claude's tokenizer; the Anthropic counting API was unavailable.

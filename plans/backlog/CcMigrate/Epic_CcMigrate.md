@@ -34,7 +34,7 @@ These five rules override anything else in this epic, its features or its storie
 is wrong; fix the story.
 
 1. **DEFAULT = DROP.** A comment survives only if it passes a WHAT-gate admission test (`reference/what.md`; tags
-   `haz cpl sec inv ext ord why ref perf todo`). Poetry, narration, restating code, history/changelog, business
+   `hazard coupled security invariant external order why see perf todo`). Poetry, narration, restating code, history/changelog, business
    paraphrase and explanations of hard code are removed, plain and simple. **Doubt = DROP.** The LLM judgment has
    **no** UNKNOWN or "needs review" outcome.
 2. **Haiku judges and rewrites purely from the comment text.** It never sees code bodies. Its input per comment is the
@@ -254,7 +254,7 @@ dropped at occurrence B.
 
 ### D6. Anchor provenance
 A path or symbol anchor in a returned line must appear literally in the comment text or be the attached
-declaration's name. The declaration name is allowed because `reference/examples.md` shows `#^ ord _flush<close`
+declaration's name. The declaration name is allowed because `reference/examples.md` shows `#^ order _flush before close`
 naming the governed function. **The default `anchor_provenance = "comment+decl"` (comment text plus the governed
 declaration's name) is the user's approved decision.** The setting keeps the option `anchor_provenance = "comment"`
 to tighten this to comment-text-only.
@@ -367,7 +367,7 @@ Every story follows these rules; stories reference them instead of restating the
 
 - **Explanations of hard code are deleted.** The code is the source of truth; an explanation is not an admission test.
 - **Haiku compresses what a comment claims; it cannot verify the claim is still true.** Only anchors are verified
-  (existence and provenance), not the semantics of a `haz` or `inv`.
+  (existence and provenance), not the semantics of a `hazard` or `invariant`.
 - **Context-dependent comments are dropped** ("because of the above", "same as before"): Haiku sees no code.
 - **Evidence gaps:** C, C++ and Pascal had no corpus samples in the design phase, and the four SQL dialects were
   pooled. Their host bindings rest on syntax knowledge, and their pragma and generated lists may be incomplete; the

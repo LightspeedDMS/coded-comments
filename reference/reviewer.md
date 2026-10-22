@@ -25,7 +25,7 @@ do not edit code. Rules: `rules/core.yaml`, `grammar.md`, `exemptions.md`, your 
 | `UNKNOWN` | M | warn | a required check cannot be decided: doc export status, unreadable repository |
 | `VACUOUS` | M | warn | reads as a fact but asserts nothing checkable (`why retry_count works`) |
 | `REDUNDANT` | M | warn | restates code, narrates, paraphrases, or is history |
-| `UNSUPPORTED` | M | warn | `haz` the compiler or tests flag; `perf` with no number or bound; `ref` to adjacent code; `todo` with no target |
+| `UNSUPPORTED` | M | warn | `hazard` the compiler or tests flag; `perf` with no number or bound; `see` to adjacent code; `todo` with no target |
 | `SCOPE` | M | warn | a blank or uncoded line between a coded run and its target |
 | `DUP` | L | warn | the same fact twice |
 | `DOCCAP` | L | warn | exempt doc over its cap, or only repeats the name |

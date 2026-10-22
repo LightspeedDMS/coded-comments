@@ -6,54 +6,54 @@ syntax and rule S1 are checked, resolution is not.
 ## Valid
 
 ```coded
-#^ cpl activated-repos=golden-repos copy-on-write;build_snapshot_manager;#1052
-#^ ord ensure_encryption_key_salt<manager init;failure=>abort startup
-//^ inv `Vec<u8>`.len()<=cap
-//^ haz missing abi_version=>None not current ABI;#1784
---^ cpl token-family tables=RefreshTokenBackend._ensure_schema;db/migrations/025.sql
-#^ ext playwright --with-deps=Debian only;doc:playwright-cli#install
-//^ sec RemoveDangerouslySkipPermissions<launch;--allowedTools enforced
-//^ perf lookup=hot loop;cache=per request;src/idx/lookup.rs:probe
-#^ todo split parse_config;#412
-//^ why retry=3 not backoff;server drops idle conns>30s
-//^ ext `println!`=stdout;`!flag`=unset
-//^ ord `a;b`<c.go
-//^ inv id!=0;len>=1;cap<=64;n>0
-//^ cpl foo.bar baz
-x = load()  #^ ord load()<validate
+#^ coupled activated-repos with golden-repos copy-on-write; build_snapshot_manager; #1052
+#^ order ensure_encryption_key_salt before manager init; failure => abort startup
+//^ invariant `Vec<u8>`.len() <= cap
+//^ hazard missing abi_version => None, not current ABI; #1784
+--^ coupled token-family tables with RefreshTokenBackend._ensure_schema; db/migrations/025.sql
+#^ external playwright --with-deps = Debian only; doc:playwright-cli#install
+//^ security RemoveDangerouslySkipPermissions before launch; --allowedTools enforced
+//^ perf lookup = hot loop; cache = per request; src/idx/lookup.rs:probe
+#^ todo split parse_config; #412
+//^ why retry = 3, not backoff; server drops idle conns > 30s
+//^ external `println!` = stdout; `!flag` = unset
+//^ order `a;b` before c.go
+//^ invariant id != 0;len>=1; cap <= 64;n>0
+//^ coupled foo.bar baz
+x = load()  #^ order load() before validate
 ```
 
 ## Invalid (grammar or S1)
 
 ```bad
-#^ inv This function validates the input before doing anything
-//^ ref hot loop
+#^ invariant This function validates the input thoroughly
+//^ see hot loop
 #^ note x=y
-//^inv x<y
-//^ haz a=>
-#^ ord a<b; c<d
-// inv x<=y
-#^ ref
-#^ cpl a=>b=>c
-//^ inv a<=b<=c
-//^ inv `Vec<u8>.len()<=cap
-//^ inv ``<=cap
-/*^ inv x<y */
+//^invariant x<y
+//^ hazard a=>
+#^ order a before b;  c before d
+// invariant x<=y
+#^ see
+#^ coupled a=>b=>c
+//^ invariant a<=b<=c
+//^ invariant `Vec<u8>.len()<=cap
+//^ invariant ``<=cap
+/*^ invariant x<y */
 ```
 
-Why, in order: no anchor or operator (S1); no anchor or operator (S1); unknown tag; no space after marker; empty
-operand; space after `;`; free-form marker; empty body; two operators in one clause; two operators; unterminated
-quote; empty quote; block form.
+Why, in order: no anchor, operator, or before/after (S1); no anchor, operator, or before/after (S1); unknown tag; no
+space after marker; empty operand; two spaces after `;` (at most one space may follow `;`); free-form marker; empty
+body; two operators in one clause; two operators; unterminated quote; empty quote; block form.
 
 ## Valid, rejected by judgment
 
 The grammar cannot see these as wrong; the reviewer's PROSE and VACUOUS judgment does.
 
 ```judged
-#^ why function_name is very good and extremely secure
-//^ haz x=y;this is just narration
---^ inv process_data simply returns the input
-//^ ord alpha beta gamma delta epsilon<x
-//^ why retry_count works
-#^ inv config.json looks fine
+#^ why function_name is very good, not other_name; extremely secure
+//^ hazard x => y; this is just narration
+--^ invariant process_data simply returns the input
+//^ order alpha beta gamma delta epsilon before x
+//^ why retry_count, not other_count; works
+#^ invariant config.json looks fine
 ```

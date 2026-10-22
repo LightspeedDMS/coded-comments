@@ -49,8 +49,8 @@ summary: lines returned, lines kept, lines dropped by class (`SYNTAX`, `PROSE`, 
 - **Budgets (deterministic trim):** within a run of coded lines that govern one target, at most
   `run_lines` lines are kept. Per file with `code_lines >= min_code_lines`, at most
   `floor(coded_per_code * code_lines)` coded lines are kept. Lines are removed in this **drop order**: (1) tag
-  priority, lowest first, `ref < todo < perf < why < ext < ord < cpl < inv < haz < sec` (rationale: `ref` asserts no
-  constraint and `todo` is tracked elsewhere, while `sec`/`haz` prevent the costliest mistakes); (2) more o200k tokens
+  priority, lowest first, `see < todo < perf < why < external < order < coupled < invariant < hazard < security` (rationale: `see` asserts no
+  constraint and `todo` is tracked elsewhere, while `security`/`hazard` prevent the costliest mistakes); (2) more o200k tokens
   first; (3) later file position first. Removed lines get `BUDGET run_lines` or `BUDGET coded_per_code`. A REWRITE
   left with no lines becomes DROP. The priority list is in `defaults.toml` (`budget_drop_order`).
 
@@ -117,14 +117,14 @@ becomes DROP with `source=budget`, which follows how.md ("Over a limit: delete t
 Feature: validated proposals
 
   Scenario: Valid lines are composed with the host marker
-    Given a python unit whose judgment is REWRITE with lines [{tag: "ord", body: "ensure_key_salt<manager init;failure=>abort startup"}]
+    Given a python unit whose judgment is REWRITE with lines [{tag: "order", body: "ensure_key_salt before manager init; failure => abort startup"}]
     And "ensure_key_salt" is named in the comment text and declared in the repo
     When proposals are built
-    Then the proposal has disposition REWRITE and lines ["#^ ord ensure_key_salt<manager init;failure=>abort startup"] with the unit's indent
+    Then the proposal has disposition REWRITE and lines ["#^ order ensure_key_salt before manager init; failure => abort startup"] with the unit's indent
 
   Scenario: Invented anchors are dropped
     Given "src/db/schema.py" exists and declares "Schema"
-    And a judgment line "cpl schema=src/db/schema.py:Schema" where the comment text never mentions schema.py or Schema
+    And a judgment line "coupled schema with src/db/schema.py:Schema" where the comment text never mentions schema.py or Schema
     When proposals are built
     Then the line is in dropped_lines with class PROVENANCE
     And if no other line is valid the disposition is DROP with reason "all_lines_invalid"
@@ -150,13 +150,13 @@ Feature: validated proposals
     Then the CAP is rejected with DOCCAP
 
   Scenario: Trailing comments keep one line
-    Given a trailing unit whose judgment returns valid "ext" and "why" lines
-    Then the proposal keeps the "ext" line as trailing and drops "why" with TRAILING_SINGLE
+    Given a trailing unit whose judgment returns valid "external" and "why" lines
+    Then the proposal keeps the "external" line as trailing and drops "why" with TRAILING_SINGLE
 
   Scenario: Budget trimming is deterministic
-    Given a file with 60 code lines (limit floor(0.10*60)=6) and 9 valid coded lines across tags sec, haz, inv, ref, ref, todo, why, perf, cpl
+    Given a file with 60 code lines (limit floor(0.10*60)=6) and 9 valid coded lines across tags security, hazard, invariant, see, see, todo, why, perf, coupled
     When proposals are built
-    Then the two ref lines and the todo line are dropped with "BUDGET coded_per_code"
+    Then the two see lines and the todo line are dropped with "BUDGET coded_per_code"
     And running the build twice yields byte-identical proposals.jsonl
 
   Scenario: Malformed judgments drop their units

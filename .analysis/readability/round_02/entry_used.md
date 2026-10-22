@@ -1,0 +1,3 @@
+## Code comments (coded-comments)
+Write a comment only if it prevents a mistake or saves a search and the code, names, types and tests cannot show it. Then write it as one coded line, never prose: `//^ hazard removing nonce => replay attacks; #123` (`#^` Python/Shell, `--^` SQL). Tags: hazard coupled security invariant external order why see perf todo (`why` marks a deliberate choice to keep, `see` only points). `=>` means "leads to", `;` separates facts, `#n` is an issue, `path:symbol` a code location, `doc:x` a doc anchor. Exported-API docs, pragmas, licenses and generated markers are exempt.
+Before writing, reviewing or migrating comments, read `~/.claude/coded-comments/index.md`.

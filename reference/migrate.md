@@ -11,7 +11,7 @@
 # mapping; deferred — 0 is a non-None, non-negative int (FR6 contract met).
 ```
 ```coded
-#^ todo derive repos_skipped;domains-to-repos mapping;#874
+#^ todo derive repos_skipped from domains-to-repos mapping; #874
 ```
 
 ```
@@ -20,5 +20,5 @@
 # time O(n) regardless of pattern complexity.
 ```
 ```coded
-#^ perf regex_query=linear time DFA;no backtracking
+#^ perf regex_query = linear-time DFA; no backtracking
 ```

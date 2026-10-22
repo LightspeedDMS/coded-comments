@@ -13,8 +13,8 @@ import grammar_check as gc
 ROOT = Path(__file__).resolve().parents[1]
 RULES = ROOT / "reference" / "rules" / "core.yaml"
 SEMANTIC_ONLY = {
-    "#^ inv This function validates the input before doing anything",
-    "//^ ref hot loop",
+    "#^ invariant This function validates the input thoroughly",
+    "//^ see hot loop",
 }
 EXPECTED_HOSTS = 14
 HOST_KEYS = sorted(["marker", "line", "block", "doc", "exported", "pragma", "generated"])

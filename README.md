@@ -8,9 +8,9 @@ agent nothing it could not derive from the code itself. coded-comments sets a st
 terse, machine-checkable line format for the few that pass.
 
 ```
-//^ haz remove nonce=>replay;#123
-#^ ord ensure_key_salt<manager init;failure=>abort startup
---^ cpl token-family tables=src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
+//^ hazard removing nonce check => replay attacks; #123
+#^ order ensure_key_salt before KeyManager init; failure => abort startup
+--^ coupled token-family tables with src/code_indexer/server/storage/sqlite_backends/refresh_token_backend.py:RefreshTokenSqliteBackend._ensure_schema
 ```
 
 ## Principles
@@ -22,7 +22,7 @@ terse, machine-checkable line format for the few that pass.
 - **Verifiable references.** Paths, symbols, issue numbers and doc anchors must resolve. A reference that stops
   resolving is a detectable defect, not silent rot.
 - **Small instruction footprint.** The installed rules are split by task so an agent loads only what it needs: about
-  1,700 tokens to write comments, about 3,200 to review them.
+  1,800 tokens to write comments, about 3,250 to review them.
 
 ## Example
 
@@ -50,7 +50,7 @@ cache = {}
 for user in users:
     cache[user.id] = user
 
-#^ ord ensure_key_salt<manager init;failure=>abort startup
+#^ order ensure_key_salt before KeyManager init; failure => abort startup
 ensure_key_salt()
 manager = KeyManager()
 ```
@@ -60,7 +60,8 @@ the code does not show, so it survives as one coded line.
 
 ## The language
 
-A coded line is `<marker> <tag> <clause>[;<clause>]`: one fact per physical line, no continuation lines.
+A coded line is `<marker> <tag> <clause>[; <clause>]`: one fact per physical line, no continuation lines. Clauses
+are terse facts that keep their verbs ("must parse as", "is read last") and drop filler.
 
 **Markers** (line comments only):
 
@@ -74,20 +75,31 @@ A coded line is `<marker> <tag> <clause>[;<clause>]`: one fact per physical line
 
 | tag | write it only if |
 |---|---|
-| `haz` | a plausible edit brings back a known failure and no compiler or test flags that edit |
-| `cpl` | changing this forces a change elsewhere that nothing would flag |
-| `sec` | it marks who is trusted, what is validated or what must not be exposed, and the code does not show it |
-| `inv` | a condition must stay true and no check, assert or type enforces it here |
-| `ext` | behavior depends on an external API, tool, version or spec quirk the code cannot show |
-| `ord` | correctness depends on order, concurrency, retry, cleanup or lifecycle that local flow hides |
-| `why` | a reader would plausibly "fix" the code into something that fails |
-| `ref` | the detail lives more than a hop away and a search is slow |
+| `hazard` | a plausible edit brings back a known failure and no compiler or test flags that edit |
+| `coupled` | changing this forces a change elsewhere that nothing would flag |
+| `security` | it marks who is trusted, what is validated or what must not be exposed, and the code does not show it |
+| `invariant` | a condition must stay true and no check, assert or type enforces it here |
+| `external` | behavior depends on an external API, tool, version or spec quirk the code cannot show |
+| `order` | correctness depends on order, concurrency, retry, cleanup or lifecycle that local flow hides |
+| `why` | a reader would plausibly "fix" the code into something that fails; the line names that rejected option (`not X`) |
+| `see` | the detail lives more than a hop away and a search is slow |
 | `perf` | the path is hot, shown by a number, a bound or a measurement reference |
-| `todo` | a remaining task is checkable: an issue number, or a `path:symbol` and what done looks like |
+| `todo` | a remaining task is checkable: an issue number, or `done when <path:symbol> <state>` |
 
-**Operators:** `=>` then, `<` before, `>` after, `<=` `>=` bounds, `=` is, `!=` differs.
+**Operators:** `=>` leads to (causes, then, returns, requires), `=` is, `!=` is not, `<` `<=` `>` `>=` compare values.
+Order is written with the words `before` and `after`.
 **Anchors:** `path:symbol`, `#123`, `doc:anchor`, symbol names, and backtick literals for names that contain operator
 characters (`` `Vec<u8>` ``).
+
+```
+//^ invariant topN <= maxSimpleTopN; slice <= 1MiB
+#^ external /etc/tlp.conf is read last => wins over /etc/tlp.d/*.conf
+//^ why return null, not throw; parse error => caller logs warning
+#^ todo move retry policy to config; done when internal/retry/policy.go:Default reads config
+```
+
+A Codex model given only the entry snippet below explained 50 such snippets across all 14 languages, plus 15 held-out
+ones, with no misreadings in two consecutive runs ([`.analysis/readability/`](.analysis/readability/README.md)).
 
 **Exempt from the format:** prose docs on the truly exported API surface (capped in length), tool pragmas, license and
 copyright headers, shebang and encoding lines, and generated-code markers. Each language's export test, pragmas and
@@ -113,11 +125,11 @@ protocol, add the entry snippet it prints (also in [`reference/ENTRY.md`](refere
 
 ```markdown
 ## Code comments (coded-comments)
-Write a comment only if it prevents a mistake or saves a search and the code, names, types and tests cannot show it. Then write it as one coded line, never prose: `//^ haz remove nonce=>replay;#123` (`#^` Python/Shell, `--^` SQL). Tags: haz cpl sec inv ext ord why ref perf todo. Exported-API docs, pragmas, licenses and generated markers are exempt.
-Before writing, reviewing or migrating comments, read `~/.claude/coded-comments/index.md`.
+Write a comment only if it prevents a mistake or saves a search that code, names, types and tests cannot, as one coded line, never prose: `//^ hazard removing nonce => replay attacks; #123` (`#^` Python/Shell, `--^` SQL). Tags: hazard coupled security invariant external order why (deliberate choice; `not X` is the rejected option) see perf todo. `=>` leads to; `;` separates facts; `doc:x` doc anchor. Exempt: exported-API docs, pragmas, licenses, generated markers.
+To write, review or migrate comments, read `~/.claude/coded-comments/index.md`.
 ```
 
-The snippet costs about 120 tokens. The agent reads `index.md` on demand and loads only the files for the task at
+The snippet costs about 150 tokens. The agent reads `index.md` on demand and loads only the files for the task at
 hand:
 
 | task | files loaded |

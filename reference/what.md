@@ -11,7 +11,7 @@ For each fact you might write, go top to bottom. The first yes decides.
 3. Restates a name, narrates steps, paraphrases a business rule the code shows, labels a section, is a banner,
    commented-out code, or a `todo` with no target? Write nothing.
 4. A doc, issue, spec or other code already holds it? Do not copy. If the next edit must respect a rule from it,
-   write that rule as one `ext`, `inv` or `haz` line with the `doc:` or path anchor. Else write one `ref` only when
+   write that rule as one `external`, `invariant` or `hazard` line with the `doc:` or path anchor. Else write one `see` only when
    the target is more than a hop away; otherwise nothing.
 5. Match one admission test: write one coded line with that tag. No match: write nothing.
 
@@ -19,14 +19,14 @@ If you cannot say in five words which mistake the line prevents or which search 
 
 | tag | write it only if |
 |---|---|
-| `haz` | a plausible edit brings back a known failure and no compiler or test flags that edit; name both |
-| `cpl` | changing this forces a change elsewhere that nothing would flag; name the place |
-| `sec` | it marks who is trusted, what is validated or what must not be exposed, and the code does not show it |
-| `inv` | a condition must stay true and no check, assert or type enforces it here |
-| `ext` | behavior depends on an external API, tool, version or spec quirk the code cannot show |
-| `ord` | correctness depends on order, concurrency, retry, cleanup or lifecycle that local flow hides |
-| `why` | a reader would plausibly "fix" the code into something that fails; give the reason or the rejected option |
-| `ref` | the detail lives more than a hop away and a search is slow; never copy the detail |
+| `hazard` | a plausible edit brings back a known failure and no compiler or test flags that edit; name both |
+| `coupled` | changing this forces a change elsewhere that nothing would flag; name the place |
+| `security` | it marks who is trusted, what is validated or what must not be exposed, and the code does not show it |
+| `invariant` | a condition must stay true and no check, assert or type enforces it here |
+| `external` | behavior depends on an external API, tool, version or spec quirk the code cannot show |
+| `order` | correctness depends on order, concurrency, retry, cleanup or lifecycle that local flow hides |
+| `why` | a reader would plausibly "fix" the code into something that fails; name that rejected option and the reason |
+| `see` | the detail lives more than a hop away and a search is slow; never copy the detail |
 | `perf` | the path is hot, shown by a number, a bound or a measurement ref; or a simplification changes complexity |
 | `todo` | a remaining task is checkable: it names an issue, or a path:symbol and what done looks like |
 

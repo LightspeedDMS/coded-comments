@@ -27,7 +27,7 @@ Haiku never writes markers). The tool never sends code bodies: the only code tex
 ```
 object, additionalProperties false, required [decision, lines, cap_text, reason]
   decision : enum [DROP, REWRITE, CAP]
-  lines    : array of object {tag: enum [haz, cpl, sec, inv, ext, ord, why, ref, perf, todo], body: string},
+  lines    : array of object {tag: enum [hazard, coupled, security, invariant, external, order, why, see, perf, todo], body: string},
              additionalProperties false, required [tag, body]      # body = clauses after the tag, no marker
   cap_text : string                                                # "" unless decision == CAP
   reason   : string                                                # short; shown in the report
@@ -43,7 +43,7 @@ DROP; CAP only when `exported` is true).
    words which mistake the line prevents or which search it saves.
 3. Always DROP: narration, restating names or code, history/changelog/ticket stories, business paraphrase, poetry,
    explanations of how hard code works, context-dependent text ("as above", "see below"), and `todo` without an issue
-   or `path:symbol=done` target.
+   or `done when <path:symbol> <state>` target.
 4. Output `tag` + `body` only; never write a marker; at most 3 lines; one fact per line; shapes from `how.md`.
 5. Anchors: copy only paths, symbols, issue numbers and doc references that appear literally in the comment text, or
    the declaration name given. Never invent a path. Quote names containing `< > = !` with backticks. Do not use words

@@ -4,9 +4,13 @@ import re
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 SCAN_DIRS = ("reference", "docs")
-TAGS = "inv|haz|why|ext|cpl|ord|sec|ref|perf|todo"
+RULES = yaml.safe_load((ROOT / "reference" / "rules" / "core.yaml").read_text(encoding="utf-8"))
+TAGS = "|".join(RULES["tags"])
+ORDER_WORDS = frozenset(RULES["order_words"])
 PREFIX = re.compile(r"(?:^|\s)(?:#\^|//\^|--\^) (?:%s) " % TAGS)
 TOKEN = re.compile(r"(?P<q>`[^`\n\r]+`)|(?P<op>=>|<=|>=|!=|<|>|=)|(?P<semi>;)|(?P<sp> )|(?P<w>[^\s;<>=!`]+)")
 ISSUE = re.compile(r"^#\d+$")
@@ -81,18 +85,22 @@ def valid(line):
     tokens = tokenize(line[m.end():])
     if not tokens:
         return False
-    clauses, current = [], []
+    clauses, current, after_semi = [], [], False
     for tok in tokens:
         if tok[0] == "semi":
             clauses.append(current)
-            current = []
+            current, after_semi = [], True
+        elif after_semi and tok[0] == "sp":
+            after_semi = False
         else:
             current.append(tok)
+            after_semi = False
     clauses.append(current)
     parsed = [parse_clause(c) for c in clauses]
     if any(p is None for p in parsed):
         return False
-    return any(has_op or any(classify(w) != "atom" for op in operands for w in op) for has_op, operands in parsed)
+    return any(has_op or any(classify(w) != "atom" or w in ORDER_WORDS for op in operands for w in op)
+               for has_op, operands in parsed)
 
 
 def check_classes():
@@ -107,7 +115,7 @@ def check_classes():
 
 def check_multiline():
     """A quoted literal may not contain LF or CR (fenced examples are single-line, so test here)."""
-    cases = ["//^ inv `a\nb`<=c", "//^ inv `a\rb`<=c"]
+    cases = ["//^ invariant `a\nb`<=c", "//^ invariant `a\rb`<=c"]
     bad = [c for c in cases if valid(c)]
     for c in bad:
         print("FAIL multiline quoted literal accepted: %r" % c)

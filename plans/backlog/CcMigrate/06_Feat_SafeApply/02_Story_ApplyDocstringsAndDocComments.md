@@ -90,9 +90,9 @@ Feature: docstrings and doc comments
     And the AST check passes with the inserted pass recorded
 
   Scenario: Rewritten docstrings move above the decorated declaration
-    Given "@cache" above "def flush(self):" with a docstring and a REWRITE line "#^ ord flush<close;close drops _buf"
+    Given "@cache" above "def flush(self):" with a docstring and a REWRITE line "#^ order flush before close; close drops _buf"
     When I apply
-    Then "#^ ord flush<close;close drops _buf" is on the line directly above "@cache" at the same indentation
+    Then "#^ order flush before close; close drops _buf" is on the line directly above "@cache" at the same indentation
     And the docstring is gone
 
   Scenario: Capped Python docstring on an exported function

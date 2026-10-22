@@ -7,11 +7,12 @@ All user decisions are settled. What remains below are limits of the evidence an
 | # | question | decision |
 |---|---|---|
 | 1 | Marker sigil `^` or `@` | `^` kept: zero tool collisions, under one token more per comment (`.analysis/numbers.json`, keys `marker.*`) |
-| 2 | `todo` target | Both `#issue` and a checkable `path:symbol=done` (as in `how.md`) |
+| 2 | `todo` target | Both `#issue` and a checkable `done when <path:symbol> <state>` (as in `how.md`) |
 | 3 | `examples.md` | Shipped: compact, optional load (`reference/examples.md`, ~330 tokens) |
 | 4 | Before→after pairs in `how.md` | Left out; the pairs stay in `docs/evidence.md` |
 | 5 | Pascal and C line comments | `//` bindings confirmed (Delphi, Free Pascal, C99+). Strict ISO Pascal and C89 are out of scope |
 | 6 | TS/JS exported surface | Libraries: `export`, `export { Local }`, public members of exported classes. App repos (package.json private, or no main/exports/types): only what the package entry point re-exports |
+| 7 | Readability (2026-10-21) | Full-word tags, `=>` "leads to", `before`/`after` for order, spaces allowed, verbs kept, `why` names the rejected option. +5.5% tokens on the 12 real lines; Codex reading only `ENTRY.md` explained 50 + 15 snippets with no misreading in two consecutive runs (`.analysis/readability/`) |
 
 ## Limits of the evidence
 

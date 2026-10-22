@@ -23,7 +23,7 @@ or `DROP <CLASS>` (`SYNTAX`, `PROSE`, `STALE`, `BUDGET`) with a detail (for exam
   that the composed regex for each host equals the one built from the YAML.
 - Classification step 6 for units whose every line starts with the host marker followed by a space. A unit that mixes
   coded and prose lines is split: coded lines are validated here, prose lines go on to steps 7–10.
-- Violation classes produced here (subset of `reviewer.md`): `SYNTAX`, `PROSE` (no anchor and no operator, rule S1),
+- Violation classes produced here (subset of `reviewer.md`): `SYNTAX`, `PROSE` (no anchor, no operator and no `before`/`after` word, rule S1),
   `STALE` (anchor does not resolve), `BUDGET` (`line_chars`, `line_tokens`, `run_lines`). A line that fails one of
   them is `DROP <CLASS>` deterministically. Judgment classes (`VACUOUS`, `REDUNDANT`, `UNSUPPORTED`, `DUP`) are not
   decided by code: a coded line that is deterministically valid is `JUDGE` with reason `coded_valid` (user decision).
@@ -48,11 +48,12 @@ validate_line(line_text, host, unit_context, index, core):
   body  = text after "<marker> <tag> "
   IF len(line_text.strip()) > core.budgets.line_chars:  RETURN Violation(BUDGET, "line_chars")
   IF o200k_tokens(line_text.strip()) > core.budgets.line_tokens: RETURN Violation(BUDGET, "line_tokens")
-  clauses = body.split(";")
+  clauses = re.split("; ?", body)                      # one optional space after ";"
   words   = tokenize each clause into words and operators (longest operator first: => <= >= != < > =)
   anchors = [w for w in words if word_class(w, core) != plain]    # first match in word_class_order
   has_op  = any clause contains an operator
-  IF NOT anchors AND NOT has_op:                        RETURN Violation(PROSE, "S1 no anchor or operator")
+  has_ord = any word in core.order_words                # before, after
+  IF NOT anchors AND NOT has_op AND NOT has_ord:        RETURN Violation(PROSE, "S1 no anchor, operator or order word")
   FOR a IN anchors:
     result = resolve(a, index, unit_context)
     IF result is unresolved:                            RETURN Violation(STALE, a)
@@ -85,23 +86,23 @@ Feature: existing coded lines
 
   Scenario: A valid coded line is sent to judgment
     Given a python repo where "src/pkg/store.py" declares class "Store" with method "_flush"
-    And a file containing "#^ ord Store._flush<close;close drops _buf" above a statement
+    And a file containing "#^ order Store._flush before close; close drops _buf" above a statement
     When I run "cc-migrate scan <repo> --units"
     Then the unit is JUDGE "coded_valid"
     And it is counted in units_to_judge
 
   Scenario: The real stale-reference case is caught
     Given a python repo where "_ensure_schema" is declared on "RefreshTokenSqliteBackend" but not on "RefreshTokenBackend"
-    And a SQL file (dialect configured) containing "--^ cpl token tables=RefreshTokenBackend._ensure_schema"
+    And a SQL file (dialect configured) containing "--^ coupled token tables with RefreshTokenBackend._ensure_schema"
     When I scan
     Then the unit is DROP "STALE" with detail "RefreshTokenBackend._ensure_schema"
 
   Scenario: Grammar failures
-    Given "//^ haz <change>=><failure>;#123"
+    Given "//^ hazard <change> => <failure>; #123"
     When I scan
     Then the unit is DROP "SYNTAX"
 
-  Scenario: Lines with neither anchor nor operator
+  Scenario: Lines with no anchor, operator or order word
     Given "#^ why because it is better"
     When I scan
     Then the unit is DROP "PROSE"
@@ -114,7 +115,7 @@ Feature: existing coded lines
     And the fourth line of the run is DROP "BUDGET run_lines"
 
   Scenario: Paths must exist
-    Given "#^ ref docs/missing.md;setup notes" and "#^ ref docs/setup.md;setup notes" where only docs/setup.md exists
+    Given "#^ see docs/missing.md; setup notes" and "#^ see docs/setup.md; setup notes" where only docs/setup.md exists
     When I scan
     Then the first is DROP "STALE" and the second is JUDGE "coded_valid"
 

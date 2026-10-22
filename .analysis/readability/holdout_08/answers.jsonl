@@ -1,0 +1,15 @@
+{"id":101,"explanation":"Do not cache get_user for the life of a process: after a role is revoked, a cached user could still have the old role. #640 is the issue reference for this hazard.","unsure":""}
+{"id":102,"explanation":"For this db.Query call, check err before registering rows.Close() with defer. When the query fails, rows is nil, so trying to close it would be wrong.","unsure":""}
+{"id":103,"explanation":"Use setTimeout with a zero delay for measure(el), rather than queueMicrotask. The intended reason is to let layout settle before measuring the element.","unsure":""}
+{"id":104,"explanation":"Do not log the contents of the token's Secret<String> value. Its Debug representation is redacted, so logging that representation must not expose the secret.","unsure":""}
+{"id":105,"explanation":"Keep the RetryCount constant in sync with the Http.Retry setting in appsettings.json. A change to either value requires a corresponding change to the other.","unsure":""}
+{"id":106,"explanation":"The offset passed to ch.map must be divisible by pageSize with no remainder. Memory mapping rejects an offset that is not page aligned.","unsure":""}
+{"id":107,"explanation":"Keep the trailing slash on the rsync source, build/. With that slash, rsync copies the contents of build into $DEST; without it, rsync copies the build directory itself.","unsure":""}
+{"id":108,"explanation":"The BRIN index on created_at is used for its size advantage: the comment says it is 1% of the size of a B-tree index. That choice relies on events being appended in time order.","unsure":""}
+{"id":109,"explanation":"Replace this loop, which repeatedly checks flag while waiting, with a futex-based wait. The TODO is complete when lock_acquire in src/sync/lock.c sleeps instead of spin waiting; src/sync/lock.c is the file and lock_acquire is the function.","unsure":""}
+{"id":110,"explanation":"Consult the failover section of the runbook for why dbo.RebuildStats runs on the secondary. doc:runbook#failover is a documentation reference to that section.","unsure":""}
+{"id":111,"explanation":"Keep this timeout below 60 seconds because the upstream proxy ends idle requests after 60 seconds. The value 30 satisfies that constraint.","unsure":""}
+{"id":112,"explanation":"Keep Widget's destructor virtual. If ~Widget() becomes non-virtual, destroying a derived object through a Widget pointer can skip the derived destructor. #915 is the issue reference for this hazard.","unsure":""}
+{"id":113,"explanation":"Set PRAGMA foreign_keys = ON before any write on this database connection. The setting applies separately to each connection, so enabling it elsewhere does not enable it here.","unsure":""}
+{"id":114,"explanation":"Use the fixed-length ShortString form, string[40], for Name instead of a regular string. The containing record is written directly to disk byte for byte, so its in-memory representation matters.","unsure":""}
+{"id":115,"explanation":"Bind caller-supplied p_id through the :1 placeholder in this EXECUTE IMMEDIATE statement. Concatenating caller input into the SQL text would allow SQL injection.","unsure":""}
